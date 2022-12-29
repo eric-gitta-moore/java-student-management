@@ -11,3 +11,7 @@ spring:
             url: jdbc:mysql://127.0.0.1:3306/old_book_pavilion_diff?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
             username: root
             password: root
+
+logging:
+  level:
+    root: debug
