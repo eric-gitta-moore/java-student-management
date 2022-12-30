@@ -136,6 +136,11 @@ public class SysUserDepartServiceImpl extends ServiceImpl<SysUserDepartMapper, S
 			if(oConvertUtils.isNotEmpty(username)){
 				query.like(SysUser::getUsername, username);
 			}
+            //update-begin---author:Curtis ---date:2022-12-30 22:14:57  for：无法搜索realname------------
+			if(oConvertUtils.isNotEmpty(realname)){
+				query.like(SysUser::getRealname, realname);
+			}
+            //update-end---author:Curtis ---date:2022-12-30 22:15:01  for：无法搜索realname------------
             //update-begin---author:wangshuai ---date:20220608  for：[VUEN-1238]邮箱回复时，发送到显示的为用户id------------
             if(oConvertUtils.isNotEmpty(id)){
                 query.eq(SysUser::getId, id);
