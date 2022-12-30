@@ -87,5 +87,6 @@ public class TeachingPlan implements Serializable {
      * 所属部门
      */
     @ApiModelProperty(value = "所属部门")
+    @Excel(name = "所属部门", dictTable = "sys_depart", dicText = "depart_name", dicCode = "org_code")
     private java.lang.String sysOrgCode;
 }
