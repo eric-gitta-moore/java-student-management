@@ -50,6 +50,14 @@ public interface SysDepartMapper extends BaseMapper<SysDepart> {
 	@Select("select id,parent_id from sys_depart where id=#{departId}")
 	public SysDepart getParentDepartId(@Param("departId") String departId);
 
+    /**
+     * 通过部门id 查询父部门
+     * @param departId 部门id
+     * @return
+     */
+	@Select("select * from sys_depart where parent_id=#{departId}")
+	public SysDepart getParentDepart(@Param("departId") String departId);
+
 	/**
 	 *  根据部门Id查询,当前和下级所有部门IDS
 	 * @param departId
@@ -90,4 +98,11 @@ public interface SysDepartMapper extends BaseMapper<SysDepart> {
 	 */
 	@Select("SELECT * FROM sys_depart where del_flag ='0' AND parent_id = #{parentId,jdbcType=VARCHAR}")
 	List<SysDepart> queryDeptByPid(@Param("parentId")String parentId);
+
+	/**
+	 * 查询父级部门
+	 * @param ids
+	 * @return
+	 */
+	List<SysDepart> queryParentDepartsByDepartIds(@Param("ids") List<String> ids);
 }
