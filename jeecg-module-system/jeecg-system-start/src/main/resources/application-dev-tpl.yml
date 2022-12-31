@@ -236,6 +236,7 @@ cas:
 #Mybatis输出sql日志
 logging:
   level:
+    org.jeecg: debug
     org.jeecg.modules.system.mapper: info
 #swagger
 knife4j:
