@@ -40,6 +40,12 @@ public class TeachingPlan implements Serializable {
     @ApiModelProperty(value = "课程名称")
     private java.lang.String name;
     /**
+     * 及格分数
+     */
+    @Excel(name = "及格分数", width = 15)
+    @ApiModelProperty(value = "及格分数")
+    private java.lang.Double passMark;
+    /**
      * 科目编号
      */
     @Excel(name = "科目编号", width = 15)
