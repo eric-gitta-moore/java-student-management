@@ -63,6 +63,7 @@ public class TeachingPlanPage {
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "创建日期")
+    @Excel(name = "创建日期", format = "yyyy-MM-dd")
     private java.util.Date createTime;
     /**
      * 更新人
@@ -76,6 +77,7 @@ public class TeachingPlanPage {
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "更新日期")
+    @Excel(name = "更新日期", format = "yyyy-MM-dd")
     private java.util.Date updateTime;
     /**
      * 所属部门
