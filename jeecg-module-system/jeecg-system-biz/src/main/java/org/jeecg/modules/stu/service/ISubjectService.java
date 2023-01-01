@@ -4,7 +4,6 @@ import org.jeecg.modules.stu.entity.Subject;
 import com.baomidou.mybatisplus.extension.service.IService;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * @Description: 科目管理
