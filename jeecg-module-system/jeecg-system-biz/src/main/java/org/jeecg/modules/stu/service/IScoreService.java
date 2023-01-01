@@ -1,6 +1,7 @@
 package org.jeecg.modules.stu.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.jeecg.modules.stu.dto.StuScoreStatDTO;
 import org.jeecg.modules.stu.entity.Score;
 
 import java.io.Serializable;
@@ -41,5 +42,12 @@ public interface IScoreService extends IService<Score> {
      * @param idList
      */
     public void delBatchMain(Collection<? extends Serializable> idList);
+
+    /**
+     * 获取学生所有课程的平均成绩和总成绩
+     * @param userId
+     * @return
+     */
+    public StuScoreStatDTO getStuScoreStat(String userId);
 
 }

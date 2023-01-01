@@ -1,6 +1,7 @@
 package org.jeecg.modules.stu.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.jeecg.modules.stu.dto.StuScoreStatDTO;
 import org.jeecg.modules.stu.entity.Score;
 import org.jeecg.modules.stu.mapper.ScoreMapper;
 import org.jeecg.modules.stu.service.IScoreService;
@@ -53,4 +54,8 @@ public class ScoreServiceImpl extends ServiceImpl<ScoreMapper, Score> implements
         }
     }
 
+    @Override
+    public StuScoreStatDTO getStuScoreStat(String userId) {
+        return scoreMapper.getStuScoreStat(userId);
+    }
 }
