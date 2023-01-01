@@ -1,5 +1,7 @@
 package org.jeecg.modules.stu.controller;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -85,6 +87,13 @@ public class ScoreController {
     @RequiresPermissions("stu:stu_score:add")
     @PostMapping(value = "/add")
     public Result<String> add(@RequestBody ScorePage scorePage) {
+        LambdaQueryWrapper<Score> query = new LambdaQueryWrapper<>();
+        query.eq(Score::getCourseId, scorePage.getCourseId());
+        query.eq(Score::getStudentId, scorePage.getStudentId());
+        Score scoreExist = scoreService.getOne(query);
+        if (scoreExist != null) {
+            return Result.error("成绩已经存在");
+        }
         Score score = new Score();
         BeanUtils.copyProperties(scorePage, score);
         scoreService.saveMain(score);
