@@ -2,4 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.jeecg.modules.stu.mapper.ScoreMapper">
 
+    <select id="getStuScoreStat" resultType="org.jeecg.modules.stu.dto.StuScoreStatDTO">
+        select avg(score) as average, sum(score) as total, count(id) as courseTotalSize
+        from stu_score
+        where student_id = #{userId};
+    </select>
+
 </mapper>

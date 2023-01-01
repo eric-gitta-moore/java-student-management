@@ -1,6 +1,5 @@
 package org.jeecg.modules.stu.controller;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -15,9 +14,13 @@ import org.jeecg.common.aspect.annotation.AutoLog;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.modules.stu.dto.StuScoreStatDTO;
 import org.jeecg.modules.stu.entity.Score;
 import org.jeecg.modules.stu.service.IScoreService;
 import org.jeecg.modules.stu.vo.ScorePage;
+import org.jeecg.modules.stu.vo.ScoreStatVO;
+import org.jeecg.modules.system.entity.SysUser;
+import org.jeecg.modules.system.service.ISysUserService;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.def.NormalExcelConstants;
 import org.jeecgframework.poi.excel.entity.ExportParams;
@@ -54,6 +57,9 @@ public class ScoreController {
     @Autowired
     private IScoreService scoreService;
 
+    @Autowired
+    private ISysUserService sysUserService;
+
     /**
      * 分页列表查询
      *
@@ -74,6 +80,20 @@ public class ScoreController {
         Page<Score> page = new Page<Score>(pageNo, pageSize);
         IPage<Score> pageList = scoreService.page(page, queryWrapper);
         return Result.OK(pageList);
+    }
+
+    @ApiOperation(value = "学生成绩-获取分数统计", notes = "获取学生分数统计")
+    @GetMapping("/score_stat")
+    public Result<ScoreStatVO> getScoreStat(@RequestParam String userId) {
+        SysUser sysUser = sysUserService.getById(userId);
+        if (null == sysUser) {
+            return Result.error("用户不存在");
+        }
+        ScoreStatVO scoreStatVO = new ScoreStatVO();
+        scoreStatVO.setUser(sysUser);
+        StuScoreStatDTO scoreStatDTO = scoreService.getStuScoreStat(userId);
+        BeanUtils.copyProperties(scoreStatDTO, scoreStatVO);
+        return Result.ok(scoreStatVO);
     }
 
     /**
