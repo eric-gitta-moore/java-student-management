@@ -69,4 +69,16 @@
         </foreach>
         )
     </select>
+
+    <select id="queryParentDepartsByDepartFields" resultType="org.jeecg.modules.system.entity.SysDepart">
+        select *
+        from sys_depart
+        where id in (select parent_id
+        from sys_depart
+        where #{field} in
+        <foreach collection="tokens" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
 </mapper>

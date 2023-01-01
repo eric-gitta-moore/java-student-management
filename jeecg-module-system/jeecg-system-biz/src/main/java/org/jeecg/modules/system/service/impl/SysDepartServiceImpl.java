@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.netty.util.internal.StringUtil;
 import org.apache.commons.lang.StringUtils;
@@ -799,6 +800,23 @@ public class SysDepartServiceImpl extends ServiceImpl<SysDepartMapper, SysDepart
         List<SysDepart> currentDepartList = sysDepartMapper.selectList(queryCurrentDepart);
         List<SysDepart> parentDepartList = sysDepartMapper.queryParentDepartsByDepartIds(ids);
         Map<String, SysDepart> map = new HashMap<>(ids.size());
+        for (SysDepart depart : currentDepartList) {
+            SysDepart sysDepart = parentDepartList.stream().filter(item -> item.getId().equals(depart.getParentId()))
+                .findAny()
+                .orElse(null);
+            map.put(depart.getId(), sysDepart);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, SysDepart> queryParentDepartsByDepartFields(List<String> tokens, SFunction<SysDepart, ?> column,
+        String field) {
+        LambdaQueryWrapper<SysDepart> queryCurrentDepart = new LambdaQueryWrapper<>();
+        queryCurrentDepart.in(column, tokens);
+        List<SysDepart> currentDepartList = sysDepartMapper.selectList(queryCurrentDepart);
+        List<SysDepart> parentDepartList = sysDepartMapper.queryParentDepartsByDepartFields(tokens, field);
+        Map<String, SysDepart> map = new HashMap<>(tokens.size());
         for (SysDepart depart : currentDepartList) {
             SysDepart sysDepart = parentDepartList.stream().filter(item -> item.getId().equals(depart.getParentId()))
                 .findAny()
