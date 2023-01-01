@@ -1,6 +1,7 @@
 package org.jeecg.modules.system.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.jeecg.modules.system.entity.SysDepart;
 import org.jeecg.modules.system.model.DepartIdModel;
@@ -189,6 +190,17 @@ public interface ISysDepartService extends IService<SysDepart> {
      * @return Map<String, SysDepart> Map<子部门id,父部门 | null>
      */
     public Map<String, SysDepart> queryParentDepartsByDepartIds(List<String> ids);
+
+    /**
+     * 查询父级部门
+     *
+     * @param tokens
+     * @param column
+     * @param field
+     * @return Map<String, SysDepart> Map<子部门id,父部门 | null>
+     */
+    public Map<String, SysDepart> queryParentDepartsByDepartFields(List<String> tokens, SFunction<SysDepart, ?> column,
+        String field);
 
     /**
      * 查询上一级部门
