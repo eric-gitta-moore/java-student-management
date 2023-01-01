@@ -1,39 +1,38 @@
 package org.jeecg.modules.stu.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.jeecg.modules.stu.entity.TeachingPlan;
-import org.jeecg.modules.stu.mapper.TeachingPlanMapper;
-import org.jeecg.modules.stu.service.ITeachingPlanService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jeecg.modules.stu.entity.Subject;
+import org.jeecg.modules.stu.mapper.SubjectMapper;
+import org.jeecg.modules.stu.service.ISubjectService;
 import org.springframework.stereotype.Service;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.Collection;
 
 /**
- * @Description: 教学计划
+ * @Description: 科目管理
  * @Author: jeecg-boot
  * @Date: 2022-12-29
  * @Version: V1.0
  */
 @Service
-public class TeachingPlanServiceImpl extends ServiceImpl<TeachingPlanMapper, TeachingPlan> implements
-    ITeachingPlanService {
+public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> implements ISubjectService {
 
     @Autowired
-    private TeachingPlanMapper teachingPlanMapper;
+    private SubjectMapper subjectMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveMain(TeachingPlan teachingPlan) {
-        teachingPlanMapper.insert(teachingPlan);
+    public void saveMain(Subject subject) {
+        subjectMapper.insert(subject);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateMain(TeachingPlan teachingPlan) {
-        teachingPlanMapper.updateById(teachingPlan);
+    public void updateMain(Subject subject) {
+        subjectMapper.updateById(subject);
 
         //1.先删除子表数据
 
@@ -43,14 +42,14 @@ public class TeachingPlanServiceImpl extends ServiceImpl<TeachingPlanMapper, Tea
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void delMain(String id) {
-        teachingPlanMapper.deleteById(id);
+        subjectMapper.deleteById(id);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void delBatchMain(Collection<? extends Serializable> idList) {
         for (Serializable id : idList) {
-            teachingPlanMapper.deleteById(id);
+            subjectMapper.deleteById(id);
         }
     }
 

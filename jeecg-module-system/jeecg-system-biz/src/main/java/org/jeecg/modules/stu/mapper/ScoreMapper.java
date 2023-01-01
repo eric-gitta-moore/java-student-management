@@ -1,8 +1,5 @@
 package org.jeecg.modules.stu.mapper;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.stu.entity.Score;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
