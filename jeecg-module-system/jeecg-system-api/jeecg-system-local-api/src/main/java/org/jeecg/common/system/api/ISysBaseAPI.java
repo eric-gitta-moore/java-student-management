@@ -383,4 +383,20 @@ public interface ISysBaseAPI extends CommonAPI {
      * @param userId
      */
     void sendAppChatSocket(String userId);
+
+    /**
+     * 查询父级部门
+     *
+     * @param ids
+     * @return Map<String, SysDepartModel> Map<子部门id,父部门 | null>
+     */
+    public Map<String, SysDepartModel> queryParentDepartsByDepartIds(List<String> ids);
+
+    /**
+     * 查询上一级部门
+     *
+     * @param id
+     * @return
+     */
+    public SysDepartModel queryParentDepart(String id);
 }
