@@ -514,7 +514,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void saveUser(SysUser user, String selectedRoles, String selectedDeparts) {
+	public SysUser saveUser(SysUser user, String selectedRoles, String selectedDeparts) {
 		//step.1 保存用户
 		this.save(user);
 		//step.2 保存角色
@@ -533,6 +533,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 				sysUserDepartMapper.insert(userDeaprt);
 			}
 		}
+		return user;
 	}
 
 	@Override

@@ -14,15 +14,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 
 /**
- * @Description: 学生成绩
+ * @Description: 学生班级
  * @Author: jeecg-boot
- * @Date: 2022-12-29
+ * @Date: 2022-12-31
  * @Version: V1.0
  */
-@ApiModel(value = "stu_score对象", description = "学生成绩")
+@ApiModel(value = "stu_class对象", description = "学生班级")
 @Data
-@TableName("stu_score")
-public class Score implements Serializable {
+@TableName("stu_class")
+public class StuClassInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,32 +33,39 @@ public class Score implements Serializable {
     @ApiModelProperty(value = "主键")
     private java.lang.String id;
     /**
-     * 学生
+     * 班级名称
      */
-    @Excel(name = "学生", width = 15, dictTable = "sys_user", dicText = "realname", dicCode = "id")
+    @Excel(name = "班级名称", width = 15)
+    @ApiModelProperty(value = "班级名称")
+    private java.lang.String name;
+    /**
+     * 年级
+     */
+    @Excel(name = "年级", width = 15, dicCode = "grade")
+    @Dict(dicCode = "grade")
+    @ApiModelProperty(value = "年级")
+    private java.lang.String grade;
+    /**
+     * 班主任
+     */
+    @Excel(name = "班主任", width = 15, dictTable = "sys_user", dicText = "realname", dicCode = "id")
     @Dict(dictTable = "sys_user", dicText = "realname", dicCode = "id")
-    @ApiModelProperty(value = "学生")
-    private java.lang.String studentId;
+    @ApiModelProperty(value = "班主任")
+    private java.lang.String classTeacher;
     /**
-     * 课程
+     * 所属专业
      */
-    @Excel(name = "课程", width = 15)
-    @ApiModelProperty(value = "课程")
-    @Dict(dictTable = "stu_teaching_plan", dicText = "name", dicCode = "id")
-    private java.lang.String courseId;
+    @Excel(name = "所属专业", width = 15, dictTable = "sys_depart", dicText = "depart_name", dicCode = "id")
+    @Dict(dictTable = "sys_depart", dicText = "depart_name", dicCode = "id")
+    @ApiModelProperty(value = "所属专业")
+    private java.lang.String major;
     /**
-     * 成绩
+     * 所属学院
      */
-    @Excel(name = "成绩", width = 15)
-    @ApiModelProperty(value = "成绩")
-    private java.lang.Double score;
-
-    /**
-     * 是否及格
-     */
-    @Excel(name = "是否及格")
-    @ApiModelProperty("是否及格")
-    private Integer isPass;
+    @Excel(name = "所属学院", width = 15, dictTable = "sys_depart", dicText = "depart_name", dicCode = "id")
+    @Dict(dictTable = "sys_depart", dicText = "depart_name", dicCode = "id")
+    @ApiModelProperty(value = "所属学院")
+    private java.lang.String collegeId;
     /**
      * 创建人
      */

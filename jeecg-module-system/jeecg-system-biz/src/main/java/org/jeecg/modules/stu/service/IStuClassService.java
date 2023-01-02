@@ -1,10 +1,13 @@
 package org.jeecg.modules.stu.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.jeecg.modules.stu.entity.StuClass;
+import org.jeecg.modules.stu.dto.StuClassDTO;
+import org.jeecg.modules.stu.entity.StuClassInfo;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: 学生班级
@@ -12,21 +15,21 @@ import java.util.Collection;
  * @Date: 2022-12-31
  * @Version: V1.0
  */
-public interface IStuClassService extends IService<StuClass> {
+public interface IStuClassService extends IService<StuClassInfo> {
 
     /**
      * 添加一对多
      *
-     * @param stuClass
+     * @param stuClassInfo
      */
-    public void saveMain(StuClass stuClass);
+    public void saveMain(StuClassInfo stuClassInfo);
 
     /**
      * 修改一对多
      *
-     * @param stuClass
+     * @param stuClassInfo
      */
-    public void updateMain(StuClass stuClass);
+    public void updateMain(StuClassInfo stuClassInfo);
 
     /**
      * 删除一对多
@@ -41,5 +44,13 @@ public interface IStuClassService extends IService<StuClass> {
      * @param idList
      */
     public void delBatchMain(Collection<? extends Serializable> idList);
+
+    /**
+     * 批量查询班级信息
+     *
+     * @param studentIds
+     * @return
+     */
+    Map<String, StuClassDTO> queryStuClasses(List<String> studentIds);
 
 }

@@ -14,7 +14,7 @@ import org.jeecg.common.aspect.annotation.AutoLog;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.oConvertUtils;
-import org.jeecg.modules.stu.dto.StuScoreStatDTO;
+import org.jeecg.modules.stu.dto.ScoreStatDTO;
 import org.jeecg.modules.stu.entity.Score;
 import org.jeecg.modules.stu.service.IScoreService;
 import org.jeecg.modules.stu.vo.ScorePage;
@@ -91,7 +91,7 @@ public class ScoreController {
         }
         ScoreStatVO scoreStatVO = new ScoreStatVO();
         scoreStatVO.setUser(sysUser);
-        StuScoreStatDTO scoreStatDTO = scoreService.getStuScoreStat(userId);
+        ScoreStatDTO scoreStatDTO = scoreService.getStuScoreStat(userId);
         BeanUtils.copyProperties(scoreStatDTO, scoreStatVO);
         return Result.ok(scoreStatVO);
     }
