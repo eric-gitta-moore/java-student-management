@@ -16,4 +16,14 @@
         group by student_id
     </select>
 
+    <select id="getCourseScoreStat" resultType="org.jeecg.modules.stu.dto.CourseScoreStatDTO">
+        select count(*) as count, avg(score) as average, count(is_pass = 1 or null) as pass_count, course_id as id
+        from stu_score
+        where course_id in
+        (
+        <foreach collection="courseIds" item="id" separator=",">#{id}</foreach>
+        )
+        group by course_id
+    </select>
+
 </mapper>

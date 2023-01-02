@@ -1,6 +1,7 @@
 package org.jeecg.modules.stu.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.jeecg.modules.stu.dto.CourseScoreStatDTO;
 import org.jeecg.modules.stu.dto.ScoreStatDTO;
 import org.jeecg.modules.stu.entity.Score;
 import org.jeecg.modules.stu.mapper.ScoreMapper;
@@ -68,5 +69,11 @@ public class ScoreServiceImpl extends ServiceImpl<ScoreMapper, Score> implements
     public Map<String, ScoreStatDTO> getStuScoreStat(List<String> userIds) {
         List<ScoreStatDTO> stuScoreStats = scoreMapper.getStuScoreStatAll(userIds);
         return stuScoreStats.stream().collect(Collectors.toMap(ScoreStatDTO::getUserId, e -> e));
+    }
+
+    @Override
+    public Map<String, CourseScoreStatDTO> getCourseScoreStat(List<String> courseIds) {
+        List<CourseScoreStatDTO> list = scoreMapper.getCourseScoreStat(courseIds);
+        return list.stream().collect(Collectors.toMap(CourseScoreStatDTO::getId, e -> e));
     }
 }

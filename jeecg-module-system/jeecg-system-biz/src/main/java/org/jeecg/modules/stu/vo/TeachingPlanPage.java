@@ -57,6 +57,36 @@ public class TeachingPlanPage {
     @Dict(dicCode = "academic_year_term")
     @ApiModelProperty(value = "开课学期")
     private java.lang.String offerTerm;
+
+    /**
+     * 修读人数
+     */
+    @Excel(name = "修读人数")
+    @ApiModelProperty(value = "修读人数")
+    private Long studentCount;
+
+    /**
+     * 及格人数
+     */
+    @Excel(name = "及格人数")
+    @ApiModelProperty(value = "及格人数")
+    private Long passCount;
+
+    /**
+     * 所有修读人数平均分
+     */
+    @Excel(name = "平均分")
+    @ApiModelProperty(value = "平均分")
+    private String scoreAverage;
+
+    /**
+     * 及格率
+     */
+    @Excel(name = "及格率")
+    @ApiModelProperty(value = "及格率")
+    private String passRatio;
+
+    // ---------------其他信息
     /**
      * 创建人
      */
