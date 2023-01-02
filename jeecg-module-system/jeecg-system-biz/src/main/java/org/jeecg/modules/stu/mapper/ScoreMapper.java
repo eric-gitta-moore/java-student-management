@@ -2,6 +2,7 @@ package org.jeecg.modules.stu.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import org.jeecg.modules.stu.dto.CourseScoreStatDTO;
 import org.jeecg.modules.stu.dto.ScoreStatDTO;
 import org.jeecg.modules.stu.entity.Score;
 
@@ -21,6 +22,14 @@ public interface ScoreMapper extends BaseMapper<Score> {
      * @param userIds
      * @return
      */
-    public List<ScoreStatDTO> getStuScoreStatAll(@Param("userIds") List<String> userIds);
+    List<ScoreStatDTO> getStuScoreStatAll(@Param("userIds") List<String> userIds);
+
+    /**
+     * 获取课程统计信息
+     *
+     * @param courseIds
+     * @return
+     */
+    List<CourseScoreStatDTO> getCourseScoreStat(@Param("courseIds") List<String> courseIds);
 
 }

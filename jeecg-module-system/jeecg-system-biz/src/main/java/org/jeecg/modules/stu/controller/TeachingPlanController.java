@@ -13,7 +13,9 @@ import org.jeecg.common.aspect.annotation.AutoLog;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.modules.stu.dto.CourseScoreStatDTO;
 import org.jeecg.modules.stu.entity.TeachingPlan;
+import org.jeecg.modules.stu.service.IScoreService;
 import org.jeecg.modules.stu.service.ITeachingPlanService;
 import org.jeecg.modules.stu.vo.TeachingPlanPage;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
@@ -35,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -52,6 +55,9 @@ public class TeachingPlanController {
     @Autowired
     private ITeachingPlanService teachingPlanService;
 
+    @Autowired
+    private IScoreService scoreService;
+
     /**
      * 分页列表查询
      *
@@ -64,14 +70,34 @@ public class TeachingPlanController {
     //@AutoLog(value = "教学计划-分页列表查询")
     @ApiOperation(value = "教学计划-分页列表查询", notes = "教学计划-分页列表查询")
     @GetMapping(value = "/list")
-    public Result<IPage<TeachingPlan>> queryPageList(TeachingPlan teachingPlan,
+    public Result<IPage<TeachingPlanPage>> queryPageList(TeachingPlan teachingPlan,
         @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
         @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
         HttpServletRequest req) {
         QueryWrapper<TeachingPlan> queryWrapper = QueryGenerator.initQueryWrapper(teachingPlan, req.getParameterMap());
-        Page<TeachingPlan> page = new Page<TeachingPlan>(pageNo, pageSize);
+        Page<TeachingPlan> page = new Page<>(pageNo, pageSize);
         IPage<TeachingPlan> pageList = teachingPlanService.page(page, queryWrapper);
-        return Result.OK(pageList);
+        List<String> courseIds = pageList.getRecords().stream().map(TeachingPlan::getId).collect(Collectors.toList());
+
+        IPage<TeachingPlanPage> result = pageList.convert(e -> {
+            TeachingPlanPage teachingPlanPage = new TeachingPlanPage();
+            BeanUtils.copyProperties(e, teachingPlanPage);
+            return teachingPlanPage;
+        });
+
+        // 加入课程统计信息
+        Map<String, CourseScoreStatDTO> courseScoreStat = scoreService.getCourseScoreStat(courseIds);
+        result.getRecords().forEach(r -> {
+            CourseScoreStatDTO stat = courseScoreStat.get(r.getId());
+            if (stat == null) {
+                return;
+            }
+            r.setStudentCount(stat.getCount());
+            r.setPassCount(stat.getPassCount());
+            r.setScoreAverage(String.format("%.2f", stat.getAverage()));
+            r.setPassRatio(String.format("%.2f", stat.getPassCount() / Double.valueOf(stat.getCount()) * 100));
+        });
+        return Result.OK(result);
     }
 
     /**

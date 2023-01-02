@@ -1,6 +1,7 @@
 package org.jeecg.modules.stu.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.jeecg.modules.stu.dto.CourseScoreStatDTO;
 import org.jeecg.modules.stu.dto.ScoreStatDTO;
 import org.jeecg.modules.stu.entity.Score;
 
@@ -59,5 +60,12 @@ public interface IScoreService extends IService<Score> {
      * @return
      */
     public Map<String, ScoreStatDTO> getStuScoreStat(List<String> userIds);
+
+    /**
+     * 获取课程统计信息
+     * @param courseIds
+     * @return
+     */
+    Map<String, CourseScoreStatDTO> getCourseScoreStat(List<String> courseIds);
 
 }
