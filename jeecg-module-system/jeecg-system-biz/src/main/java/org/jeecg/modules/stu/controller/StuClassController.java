@@ -13,7 +13,7 @@ import org.jeecg.common.aspect.annotation.AutoLog;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.oConvertUtils;
-import org.jeecg.modules.stu.entity.StuClass;
+import org.jeecg.modules.stu.entity.StuClassInfo;
 import org.jeecg.modules.stu.service.IStuClassService;
 import org.jeecg.modules.stu.vo.StuClassPage;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
@@ -55,7 +55,7 @@ public class StuClassController {
     /**
      * 分页列表查询
      *
-     * @param stuClass
+     * @param stuClassInfo
      * @param pageNo
      * @param pageSize
      * @param req
@@ -64,13 +64,13 @@ public class StuClassController {
     //@AutoLog(value = "学生班级-分页列表查询")
     @ApiOperation(value = "学生班级-分页列表查询", notes = "学生班级-分页列表查询")
     @GetMapping(value = "/list")
-    public Result<IPage<StuClass>> queryPageList(StuClass stuClass,
+    public Result<IPage<StuClassInfo>> queryPageList(StuClassInfo stuClassInfo,
         @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
         @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
         HttpServletRequest req) {
-        QueryWrapper<StuClass> queryWrapper = QueryGenerator.initQueryWrapper(stuClass, req.getParameterMap());
-        Page<StuClass> page = new Page<StuClass>(pageNo, pageSize);
-        IPage<StuClass> pageList = stuClassService.page(page, queryWrapper);
+        QueryWrapper<StuClassInfo> queryWrapper = QueryGenerator.initQueryWrapper(stuClassInfo, req.getParameterMap());
+        Page<StuClassInfo> page = new Page<StuClassInfo>(pageNo, pageSize);
+        IPage<StuClassInfo> pageList = stuClassService.page(page, queryWrapper);
         return Result.OK(pageList);
     }
 
@@ -85,9 +85,9 @@ public class StuClassController {
     @RequiresPermissions("stu:stu_class:add")
     @PostMapping(value = "/add")
     public Result<String> add(@RequestBody StuClassPage stuClassPage) {
-        StuClass stuClass = new StuClass();
-        BeanUtils.copyProperties(stuClassPage, stuClass);
-        stuClassService.saveMain(stuClass);
+        StuClassInfo stuClassInfo = new StuClassInfo();
+        BeanUtils.copyProperties(stuClassPage, stuClassInfo);
+        stuClassService.saveMain(stuClassInfo);
         return Result.OK("添加成功！");
     }
 
@@ -102,13 +102,13 @@ public class StuClassController {
     @RequiresPermissions("stu:stu_class:edit")
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
     public Result<String> edit(@RequestBody StuClassPage stuClassPage) {
-        StuClass stuClass = new StuClass();
-        BeanUtils.copyProperties(stuClassPage, stuClass);
-        StuClass stuClassEntity = stuClassService.getById(stuClass.getId());
-        if (stuClassEntity == null) {
+        StuClassInfo stuClassInfo = new StuClassInfo();
+        BeanUtils.copyProperties(stuClassPage, stuClassInfo);
+        StuClassInfo stuClassInfoEntity = stuClassService.getById(stuClassInfo.getId());
+        if (stuClassInfoEntity == null) {
             return Result.error("未找到对应数据");
         }
-        stuClassService.updateMain(stuClass);
+        stuClassService.updateMain(stuClassInfo);
         return Result.OK("编辑成功!");
     }
 
@@ -151,12 +151,12 @@ public class StuClassController {
     //@AutoLog(value = "学生班级-通过id查询")
     @ApiOperation(value = "学生班级-通过id查询", notes = "学生班级-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<StuClass> queryById(@RequestParam(name = "id", required = true) String id) {
-        StuClass stuClass = stuClassService.getById(id);
-        if (stuClass == null) {
+    public Result<StuClassInfo> queryById(@RequestParam(name = "id", required = true) String id) {
+        StuClassInfo stuClassInfo = stuClassService.getById(id);
+        if (stuClassInfo == null) {
             return Result.error("未找到对应数据");
         }
-        return Result.OK(stuClass);
+        return Result.OK(stuClassInfo);
 
     }
 
@@ -165,13 +165,13 @@ public class StuClassController {
      * 导出excel
      *
      * @param request
-     * @param stuClass
+     * @param stuClassInfo
      */
     @RequiresPermissions("stu:stu_class:exportXls")
     @RequestMapping(value = "/exportXls")
-    public ModelAndView exportXls(HttpServletRequest request, StuClass stuClass) {
+    public ModelAndView exportXls(HttpServletRequest request, StuClassInfo stuClassInfo) {
         // Step.1 组装查询条件查询数据
-        QueryWrapper<StuClass> queryWrapper = QueryGenerator.initQueryWrapper(stuClass, request.getParameterMap());
+        QueryWrapper<StuClassInfo> queryWrapper = QueryGenerator.initQueryWrapper(stuClassInfo, request.getParameterMap());
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         //配置选中数据查询条件
@@ -181,11 +181,11 @@ public class StuClassController {
             queryWrapper.in("id", selectionList);
         }
         //Step.2 获取导出数据
-        List<StuClass> stuClassList = stuClassService.list(queryWrapper);
+        List<StuClassInfo> stuClassInfoList = stuClassService.list(queryWrapper);
 
         // Step.3 组装pageList
         List<StuClassPage> pageList = new ArrayList<StuClassPage>();
-        for (StuClass main : stuClassList) {
+        for (StuClassInfo main : stuClassInfoList) {
             StuClassPage vo = new StuClassPage();
             BeanUtils.copyProperties(main, vo);
             pageList.add(vo);
@@ -224,7 +224,7 @@ public class StuClassController {
                 List<StuClassPage> list = ExcelImportUtil.importExcel(file.getInputStream(), StuClassPage.class,
                     params);
                 for (StuClassPage page : list) {
-                    StuClass po = new StuClass();
+                    StuClassInfo po = new StuClassInfo();
                     BeanUtils.copyProperties(page, po);
                     stuClassService.saveMain(po);
                 }

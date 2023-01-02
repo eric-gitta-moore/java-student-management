@@ -1,7 +1,7 @@
 package org.jeecg.modules.stu.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.jeecg.modules.stu.dto.StuScoreStatDTO;
+import org.jeecg.modules.stu.dto.ScoreStatDTO;
 import org.jeecg.modules.stu.entity.Score;
 import org.jeecg.modules.stu.mapper.ScoreMapper;
 import org.jeecg.modules.stu.service.IScoreService;
@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Description: 学生成绩
@@ -55,7 +56,17 @@ public class ScoreServiceImpl extends ServiceImpl<ScoreMapper, Score> implements
     }
 
     @Override
-    public StuScoreStatDTO getStuScoreStat(String userId) {
-        return scoreMapper.getStuScoreStat(userId);
+    public ScoreStatDTO getStuScoreStat(String userId) {
+        List<ScoreStatDTO> list = scoreMapper.getStuScoreStatAll(new ArrayList<String>(Arrays.asList(userId)));
+        if (!list.isEmpty()) {
+            return list.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public Map<String, ScoreStatDTO> getStuScoreStat(List<String> userIds) {
+        List<ScoreStatDTO> stuScoreStats = scoreMapper.getStuScoreStatAll(userIds);
+        return stuScoreStats.stream().collect(Collectors.toMap(ScoreStatDTO::getUserId, e -> e));
     }
 }

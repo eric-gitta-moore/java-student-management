@@ -15,8 +15,8 @@ import org.jeecgframework.poi.excel.annotation.Excel;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "stu_UserPage对象", description = "学生用户对象")
-public class StuUserPage extends SysUser {
+@ApiModel(value = "stu_UserScorePage对象", description = "班级成绩-学生用户分页对象")
+public class StuUserScorePage extends SysUser {
 
     @Excel(name = "父部门", dictTable = "sys_depart", dicCode = "id", dicText = "depart_name")
     @Dict(dictTable = "sys_depart", dicCode = "id", dicText = "depart_name")

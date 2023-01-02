@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jeecg.modules.stu.mapper.StudentMapper">
+
+    <resultMap id="queryPageDTOMap" type="org.jeecg.modules.stu.dto.StudentDTO">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="realname" column="realname"/>
+        <result property="avatar" column="avatar"/>
+        <result property="birthday" column="birthday"/>
+        <result property="sex" column="sex"/>
+        <result property="email" column="email"/>
+        <result property="phone" column="phone"/>
+        <result property="orgCode" column="org_code"/>
+        <result property="status" column="status"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="activitiSync" column="activiti_sync"/>
+        <result property="workNo" column="work_no"/>
+        <result property="post" column="post"/>
+        <result property="telephone" column="telephone"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_time"/>
+        <result property="updateTime" column="telephone"/>
+        <result property="userIdentity" column="user_identity"/>
+        <result property="departIds" column="depart_ids"/>
+        <result property="relTenantIds" column="rel_tenant_ids"/>
+        <result property="clientId" column="client_id"/>
+
+        <result property="classRank" column="class_rank"/>
+        <result property="parentDepartId" column="parent_depart"/>
+
+        <!-- stat -->
+        <result property="average" column="stat_average"/>
+        <result property="total" column="stat_total"/>
+        <result property="coursePassTotalSize" column="stat_course_pass_total_size"/>
+        <result property="courseTotalSize" column="stat_course_total_size"/>
+
+        <!-- stu_class -->
+        <association property="classInfo" javaType="org.jeecg.modules.stu.entity.StuClassInfo">
+            <id property="id" column="stu_class_id"/>
+            <result property="name" column="stu_class_name"/>
+            <result property="grade" column="stu_class_grade"/>
+            <result property="classTeacher" column="stu_class_class_teacher"/>
+            <result property="major" column="stu_class_major"/>
+            <result property="collegeId" column="stu_class_college_id"/>
+            <result property="createBy" column="stu_class_create_by"/>
+            <result property="createTime" column="stu_class_create_time"/>
+            <result property="updateBy" column="stu_class_update_by"/>
+            <result property="updateTime" column="stu_class_update_time"/>
+            <result property="sysOrgCode" column="stu_class_sys_org_code"/>
+        </association>
+    </resultMap>
+
+    <select id="queryPageDTO" resultMap="queryPageDTOMap">
+        select
+        <!-- # sys_user -->
+        sys_user.id as id,
+        sys_user.username as username,
+        sys_user.realname as realname,
+        sys_user.avatar as avatar,
+        sys_user.birthday as birthday,
+        sys_user.sex as sex,
+        sys_user.email as email,
+        sys_user.phone as phone,
+        sys_user.org_code as org_code,
+        sys_user.status as status,
+        sys_user.del_flag as del_flag,
+        sys_user.activiti_sync as activiti_sync,
+        sys_user.work_no as work_no,
+        sys_user.post as post,
+        sys_user.telephone as telephone,
+        sys_user.create_by as create_by,
+        sys_user.create_time as create_time,
+        sys_user.update_by as update_by,
+        sys_user.update_time as update_time,
+        sys_user.user_identity as user_identity,
+        sys_user.depart_ids as depart_ids,
+        sys_user.rel_tenant_ids as rel_tenant_ids,
+        sys_user.client_id as client_id,
+        rank() over (order by stat.total desc) as class_rank,
+        parent_depart.id as parent_depart,
+
+        <!-- # stu_class -->
+        stu_class.id as stu_class_id,
+        stu_class.name as stu_class_name,
+        stu_class.grade as stu_class_grade,
+        stu_class.class_teacher as stu_class_class_teacher,
+        stu_class.major as stu_class_major,
+        stu_class.college_id as stu_class_college_id,
+        stu_class.create_by as stu_class_create_by,
+        stu_class.create_time as stu_class_create_time,
+        stu_class.update_by as stu_class_update_by,
+        stu_class.update_time as stu_class_update_time,
+        stu_class.sys_org_code as stu_class_sys_org_code,
+
+        <!-- # stat -->
+        stat.average as stat_average,
+        stat.total as stat_total,
+        stat.course_pass_total_size as stat_course_pass_total_size,
+        stat.course_total_size as stat_course_total_size
+
+        from sys_user
+        left join stu_student_class on stu_student_class.student_id = sys_user.id
+        left join stu_class on stu_class.id = stu_student_class.class_id
+        left join sys_user_depart on sys_user_depart.user_id = sys_user.id
+        left join sys_depart as child_depart on child_depart.id = sys_user_depart.dep_id
+        left join sys_depart as parent_depart on parent_depart.id = child_depart.parent_id
+        left join (select any_value(student_id) as userId,
+        avg(score) as average,
+        sum(score) as total,
+        count(*) as course_total_size,
+        count(is_pass = 1 or null) as course_pass_total_size
+        from stu_score
+        where student_id in
+        (select id from (select id from sys_user limit ${limitBegin},${limitEnd}) tt)
+        group by student_id) as stat on stat.userId = sys_user.id
+        ${ew.customSqlSegment}
+        limit ${limitBegin},${limitEnd};
+    </select>
+
+    <select id="countPageDTO" resultType="java.lang.Long">
+        select count(*), 1 as stat_total
+        from sys_user
+                 left join stu_student_class on stu_student_class.student_id = sys_user.id
+                 left join stu_class on stu_class.id = stu_student_class.class_id
+            ${ew.customSqlSegment}
+    </select>
+</mapper>

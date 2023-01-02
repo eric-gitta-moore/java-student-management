@@ -2,4 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.jeecg.modules.stu.mapper.StuClassMapper">
 
+    <select id="queryStuClasses" resultType="org.jeecg.modules.stu.dto.StuClassDTO">
+        select *
+        from stu_student_class
+        left join stu_class on stu_class.id = stu_student_class.class_id
+        where stu_student_class.student_id in (
+        <foreach collection="studentIds" item="id" separator=",">#{id}</foreach>
+        );
+    </select>
 </mapper>

@@ -278,7 +278,7 @@ public interface ISysUserService extends IService<SysUser> {
 	 * @param selectedRoles 选择的角色id，多个以逗号隔开
 	 * @param selectedDeparts 选择的部门id，多个以逗号隔开
 	 */
-	void saveUser(SysUser user, String selectedRoles, String selectedDeparts);
+	SysUser saveUser(SysUser user, String selectedRoles, String selectedDeparts);
 
 	/**
 	 * 编辑用户

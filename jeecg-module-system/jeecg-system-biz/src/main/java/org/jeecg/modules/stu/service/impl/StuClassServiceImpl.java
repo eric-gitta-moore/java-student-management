@@ -1,7 +1,8 @@
 package org.jeecg.modules.stu.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.jeecg.modules.stu.entity.StuClass;
+import org.jeecg.modules.stu.dto.StuClassDTO;
+import org.jeecg.modules.stu.entity.StuClassInfo;
 import org.jeecg.modules.stu.mapper.StuClassMapper;
 import org.jeecg.modules.stu.service.IStuClassService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Description: 学生班级
@@ -18,21 +22,21 @@ import java.util.Collection;
  * @Version: V1.0
  */
 @Service
-public class StuClassServiceImpl extends ServiceImpl<StuClassMapper, StuClass> implements IStuClassService {
+public class StuClassServiceImpl extends ServiceImpl<StuClassMapper, StuClassInfo> implements IStuClassService {
 
     @Autowired
     private StuClassMapper stuClassMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveMain(StuClass stuClass) {
-        stuClassMapper.insert(stuClass);
+    public void saveMain(StuClassInfo stuClassInfo) {
+        stuClassMapper.insert(stuClassInfo);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateMain(StuClass stuClass) {
-        stuClassMapper.updateById(stuClass);
+    public void updateMain(StuClassInfo stuClassInfo) {
+        stuClassMapper.updateById(stuClassInfo);
 
         //1.先删除子表数据
 
@@ -51,6 +55,13 @@ public class StuClassServiceImpl extends ServiceImpl<StuClassMapper, StuClass> i
         for (Serializable id : idList) {
             stuClassMapper.deleteById(id);
         }
+    }
+
+    @Override
+    public Map<String, StuClassDTO> queryStuClasses(List<String> studentIds) {
+        List<StuClassDTO> stuClassList = stuClassMapper.queryStuClasses(studentIds);
+        return stuClassList.stream()
+            .collect(Collectors.toMap(StuClassDTO::getStudentId, e -> e));
     }
 
 }

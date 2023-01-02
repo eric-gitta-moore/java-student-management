@@ -1,11 +1,13 @@
 package org.jeecg.modules.stu.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.jeecg.modules.stu.dto.StuScoreStatDTO;
+import org.jeecg.modules.stu.dto.ScoreStatDTO;
 import org.jeecg.modules.stu.entity.Score;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: 学生成绩
@@ -44,10 +46,18 @@ public interface IScoreService extends IService<Score> {
     public void delBatchMain(Collection<? extends Serializable> idList);
 
     /**
-     * 获取学生所有课程的平均成绩和总成绩
+     * 获取学生所有课程的统计信息
      * @param userId
      * @return
      */
-    public StuScoreStatDTO getStuScoreStat(String userId);
+    public ScoreStatDTO getStuScoreStat(String userId);
+
+    /**
+     * 获取学生所有课程的统计信息
+     *
+     * @param userIds
+     * @return
+     */
+    public Map<String, ScoreStatDTO> getStuScoreStat(List<String> userIds);
 
 }
