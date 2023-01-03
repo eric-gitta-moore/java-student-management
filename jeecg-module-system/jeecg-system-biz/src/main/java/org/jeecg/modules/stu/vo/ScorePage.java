@@ -44,6 +44,14 @@ public class ScorePage {
     @ApiModelProperty(value = "成绩")
     private java.lang.Double score;
 
+
+    /**
+     * 是否及格
+     */
+    @Excel(name = "是否及格")
+    @ApiModelProperty("是否及格")
+    private Integer isPass;
+
     /**
      * 创建人
      */
