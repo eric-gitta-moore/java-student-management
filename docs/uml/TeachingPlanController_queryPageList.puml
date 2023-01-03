@@ -1,0 +1,29 @@
+@startuml
+participant Actor
+Actor -> TeachingPlanController : queryPageList
+activate TeachingPlanController
+TeachingPlanController -> TeachingPlanController : () ->
+activate TeachingPlanController
+create TeachingPlanPage
+TeachingPlanController -> TeachingPlanPage : new
+activate TeachingPlanPage
+TeachingPlanPage --> TeachingPlanController
+deactivate TeachingPlanPage
+TeachingPlanController --> TeachingPlanController
+deactivate TeachingPlanController
+TeachingPlanController -> IScoreService : getCourseScoreStat
+activate IScoreService
+IScoreService --> TeachingPlanController
+deactivate IScoreService
+TeachingPlanController -> TeachingPlanController : () ->
+activate TeachingPlanController
+TeachingPlanController --> TeachingPlanController
+deactivate TeachingPlanController
+TeachingPlanController -> Result : OK
+activate Result
+Result --> Result
+deactivate Result
+Result --> TeachingPlanController
+deactivate Result
+return
+@enduml

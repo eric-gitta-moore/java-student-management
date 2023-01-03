@@ -1,0 +1,45 @@
+@startuml
+participant Actor
+Actor -> SubjectController : queryPageList
+activate SubjectController
+SubjectController -> QueryGenerator : initQueryWrapper
+activate QueryGenerator
+QueryGenerator -> QueryGenerator : installMplus
+deactivate QueryGenerator
+QueryGenerator -> QueryGenerator : addRuleToQueryWrapper
+deactivate QueryGenerator
+QueryGenerator -> QueryGenerator : doIntervalQuery
+activate QueryGenerator
+QueryGenerator -> QueryGenerator : addQueryByRule
+deactivate QueryGenerator
+QueryGenerator -> QueryGenerator : replaceValue
+activate QueryGenerator
+QueryGenerator -> QueryGenerator : specialStrConvert
+deactivate QueryGenerator
+QueryGenerator -> QueryGenerator : addEasyQuery
+deactivate QueryGenerator
+QueryGenerator -> QueryGenerator : doMultiFieldsOrder
+deactivate QueryGenerator
+create JeecgBootException
+QueryGenerator -> JeecgBootException : new
+activate QueryGenerator
+QueryGenerator -> MatchTypeEnum : getByValue
+activate MatchTypeEnum
+MatchTypeEnum -> MatchTypeEnum : values
+activate MatchTypeEnum
+MatchTypeEnum --> MatchTypeEnum
+deactivate MatchTypeEnum
+MatchTypeEnum --> QueryGenerator
+deactivate QueryGenerator
+QueryGenerator --> SubjectController
+deactivate QueryGenerator
+SubjectController -> Result : OK
+activate Result
+Result -> Result : new
+activate Result
+Result --> Result
+deactivate Result
+Result --> SubjectController
+deactivate Result
+return
+@enduml
