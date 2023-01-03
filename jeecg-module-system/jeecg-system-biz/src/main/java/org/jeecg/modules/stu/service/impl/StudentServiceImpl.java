@@ -9,6 +9,7 @@ import org.jeecg.modules.stu.dto.StudentDTO;
 import org.jeecg.modules.stu.entity.StudentClass;
 import org.jeecg.modules.stu.mapper.StudentClassMapper;
 import org.jeecg.modules.stu.mapper.StudentMapper;
+import org.jeecg.modules.stu.query.StudentQuery;
 import org.jeecg.modules.stu.service.IStudentService;
 import org.jeecg.modules.system.entity.SysUser;
 import org.jeecg.modules.system.service.ISysUserService;
@@ -54,13 +55,19 @@ public class StudentServiceImpl implements IStudentService {
     }
 
     @Override
-    public IPage<StudentDTO> queryPage(IPage<StudentDTO> page, QueryWrapper<StudentDTO> wrapper, String classId) {
+    public IPage<StudentDTO> queryPage(IPage<StudentDTO> page, QueryWrapper<StudentDTO> wrapper, StudentQuery query) {
         Long limitBegin = page.offset();
         Long limitEnd = limitBegin + page.getSize();
         QueryWrapper<StudentDTO> studentDTOQueryWrapper = new QueryWrapper<>();
         studentDTOQueryWrapper.orderByDesc("stat_total");
-        if (oConvertUtils.isNotEmpty(classId)) {
-            studentDTOQueryWrapper.eq("stu_class.id", classId);
+        if (oConvertUtils.isNotEmpty(query.getClassId())) {
+            studentDTOQueryWrapper.eq("stu_class.id", query.getClassId());
+        }
+        if (oConvertUtils.isNotEmpty(query.getRealname())) {
+            studentDTOQueryWrapper.like("sys_user.realname", query.getRealname());
+        }
+        if (oConvertUtils.isNotEmpty(query.getWorkNo())) {
+            studentDTOQueryWrapper.like("sys_user.work_no", query.getWorkNo());
         }
         List<StudentDTO> pageDTO = studentMapper.queryPageDTO(limitBegin, limitEnd, studentDTOQueryWrapper);
         Page<StudentDTO> currentPage = new Page<>();
