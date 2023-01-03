@@ -1,0 +1,87 @@
+@startuml
+participant Actor
+Actor -> StudentController : queryStuPageList
+activate StudentController
+StudentController -> oConvertUtils : isEmpty
+activate oConvertUtils
+oConvertUtils --> StudentController
+deactivate oConvertUtils
+StudentController -> Result : ok
+activate Result
+Result -> Result : new
+activate Result
+Result --> Result
+deactivate Result
+Result --> StudentController
+deactivate Result
+create StudentDTO
+StudentController -> StudentDTO : new
+activate StudentDTO
+StudentDTO --> StudentController
+deactivate StudentDTO
+StudentController -> QueryGenerator : initQueryWrapper
+activate QueryGenerator
+QueryGenerator -> QueryGenerator : installMplus
+deactivate QueryGenerator
+QueryGenerator -> QueryGenerator : addRuleToQueryWrapper
+activate QueryGenerator
+QueryGenerator --> QueryGenerator
+deactivate QueryGenerator
+create JeecgBootException
+QueryGenerator -> JeecgBootException : new
+activate JeecgBootException
+JeecgBootException --> QueryGenerator
+deactivate JeecgBootException
+QueryGenerator --> QueryGenerator
+deactivate QueryGenerator
+QueryGenerator -> MatchTypeEnum : getByValue
+activate MatchTypeEnum
+MatchTypeEnum -> oConvertUtils : isEmpty
+activate oConvertUtils
+oConvertUtils --> MatchTypeEnum
+deactivate oConvertUtils
+MatchTypeEnum -> MatchTypeEnum : values
+activate MatchTypeEnum
+MatchTypeEnum --> MatchTypeEnum
+deactivate MatchTypeEnum
+MatchTypeEnum --> QueryGenerator
+deactivate MatchTypeEnum
+QueryGenerator -> QueryGenerator : () ->
+activate QueryGenerator
+StudentController -> oConvertUtils : isNotEmpty
+activate oConvertUtils
+oConvertUtils --> StudentController
+deactivate oConvertUtils
+StudentController -> IStudentService : queryPage
+activate IStudentService
+IStudentService --> StudentController
+deactivate IStudentService
+StudentController -> Result : ok
+activate Result
+Result -> Result : new
+activate Result
+Result --> Result
+deactivate Result
+Result --> StudentController
+deactivate Result
+StudentController -> ISysUserService : getDepNamesByUserIds
+activate ISysUserService
+ISysUserService --> StudentController
+activate StudentController
+create StudentPage
+StudentController -> StudentPage : new
+activate StudentPage
+StudentPage --> StudentController
+deactivate StudentPage
+StudentController --> StudentController
+deactivate StudentController
+StudentController -> Result : ok
+activate Result
+Result -> Result : new
+activate Result
+Result --> Result
+deactivate Result
+Result --> StudentController
+deactivate Result
+return
+@enduml

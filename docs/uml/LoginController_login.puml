@@ -1,0 +1,63 @@
+@startuml
+participant Actor
+Actor -> LoginController : login
+activate LoginController
+LoginController -> Md5Util : md5Encode
+activate Md5Util
+Md5Util -> Md5Util : byteArrayToHexString
+activate Md5Util
+Md5Util -> Md5Util : byteToHexString
+activate Md5Util
+Md5Util --> Md5Util
+deactivate Md5Util
+Md5Util --> Md5Util
+deactivate Md5Util
+Md5Util -> Md5Util : byteArrayToHexString
+activate Md5Util
+Md5Util -> Md5Util : byteToHexString
+activate Md5Util
+Md5Util --> Md5Util
+deactivate Md5Util
+Md5Util --> Md5Util
+deactivate Md5Util
+Md5Util --> LoginController
+deactivate Md5Util
+LoginController -> ISysUserService : checkUserIsEffective
+activate ISysUserService
+ISysUserService --> LoginController
+deactivate ISysUserService
+LoginController -> PasswordUtil : encrypt
+activate PasswordUtil
+PasswordUtil -> PasswordUtil : getPbeKey
+activate PasswordUtil
+PasswordUtil --> PasswordUtil
+deactivate PasswordUtil
+PasswordUtil -> PasswordUtil : bytesToHexString
+activate PasswordUtil
+PasswordUtil --> PasswordUtil
+deactivate PasswordUtil
+PasswordUtil --> LoginController
+deactivate PasswordUtil
+LoginController -> LoginController : userInfo
+activate LoginController
+LoginController -> JwtUtil : sign
+activate JwtUtil
+JwtUtil --> LoginController
+deactivate JwtUtil
+LoginController -> ISysUserService : updateUserDepart
+activate ISysUserService
+ISysUserService --> LoginController
+deactivate ISysUserService
+LoginController -> ISysUserService : updateUserDepart
+activate ISysUserService
+ISysUserService --> LoginController
+deactivate ISysUserService
+LoginController --> LoginController
+deactivate LoginController
+create LoginUser
+LoginController -> LoginUser : new
+activate LoginUser
+LoginUser --> LoginController
+deactivate LoginUser
+return
+@enduml
