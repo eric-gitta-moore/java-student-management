@@ -26,14 +26,14 @@ public class ScorePage {
     /**
      * 学生
      */
-    @Excel(name = "学生", width = 15, dictTable = "sys_user", dicText = "realname", dicCode = "username")
-    @Dict(dictTable = "sys_user", dicText = "realname", dicCode = "username")
+    @Excel(name = "学生", width = 15, dictTable = "sys_user", dicText = "username", dicCode = "id")
+    @Dict(dictTable = "sys_user", dicText = "username", dicCode = "id")
     @ApiModelProperty(value = "学生")
     private java.lang.String studentId;
     /**
      * 课程
      */
-    @Excel(name = "课程", width = 15)
+    @Excel(name = "课程", width = 15, dictTable = "stu_teaching_plan", dicText = "name", dicCode = "id")
     @Dict(dictTable = "stu_teaching_plan", dicText = "name", dicCode = "id")
     @ApiModelProperty(value = "课程")
     private java.lang.String courseId;
@@ -48,8 +48,9 @@ public class ScorePage {
     /**
      * 是否及格
      */
-    @Excel(name = "是否及格")
+    @Excel(name = "是否及格", dicCode = "yn")
     @ApiModelProperty("是否及格")
+    @Dict(dicCode = "yn")
     private Integer isPass;
 
     /**

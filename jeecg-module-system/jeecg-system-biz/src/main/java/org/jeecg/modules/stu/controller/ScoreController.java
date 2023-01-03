@@ -151,12 +151,14 @@ public class ScoreController {
             return Result.error("未找到对应数据");
         }
         // 判断是否及格
-        TeachingPlan course = teachingPlanService.getById(scoreEntity.getCourseId());
-        scoreEntity.setIsPass(0);
-        if (scoreEntity.getScore() > course.getPassMark()) {
-            scoreEntity.setIsPass(1);
+        if (!scoreEntity.getScore().equals(score.getScore())) {
+            TeachingPlan course = teachingPlanService.getById(score.getCourseId());
+            score.setIsPass(0);
+            if (score.getScore() > course.getPassMark()) {
+                score.setIsPass(1);
+            }
         }
-        scoreService.updateMain(scoreEntity);
+        scoreService.updateMain(score);
         return Result.OK("编辑成功!");
     }
 

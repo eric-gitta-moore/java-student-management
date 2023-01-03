@@ -15,6 +15,7 @@ import org.jeecg.common.util.PasswordUtil;
 import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.base.service.BaseCommonService;
 import org.jeecg.modules.stu.dto.StudentDTO;
+import org.jeecg.modules.stu.query.StudentQuery;
 import org.jeecg.modules.stu.service.IScoreService;
 import org.jeecg.modules.stu.service.IStuClassService;
 import org.jeecg.modules.stu.service.IStudentService;
@@ -30,7 +31,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -57,23 +57,19 @@ public class StudentController {
     private BaseCommonService baseCommonService;
 
     @Autowired
-    private IStudentService stuService;
+    private IStudentService studentService;
 
     @Autowired
     private IStuClassService stuClassService;
-
-    @Autowired
-    private IStudentService studentService;
 
 
     @GetMapping("/list")
     @ApiOperation(value = "学生管理-分页列表查询", notes = "学生管理-分页列表查询")
     public Result<IPage<StudentPage>> queryStuPageList(StuUserPage user,
-        @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-        @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-        @RequestParam(defaultValue = "") String classId,
-        HttpServletRequest req) {
-        if (oConvertUtils.isEmpty(classId)) {
+        @RequestParam(defaultValue = "1") Integer pageNo,
+        @RequestParam(defaultValue = "10") Integer pageSize,
+        HttpServletRequest req, StudentQuery studentQuery) {
+        if (oConvertUtils.isEmpty(studentQuery.getClassId())) {
             return Result.ok(new Page<>());
         }
         StudentDTO studentDTO = new StudentDTO();
@@ -88,7 +84,7 @@ public class StudentController {
         queryWrapper.ne("sys_user.username", "_reserve_user_external");
         queryWrapper.eq("sys_user.post", "student");
         Page<StudentDTO> page = new Page<>(pageNo, pageSize);
-        IPage<StudentDTO> pageList = studentService.queryPage(page, queryWrapper, classId);
+        IPage<StudentDTO> pageList = studentService.queryPage(page, queryWrapper, studentQuery);
         if (pageList.getTotal() == 0) {
             return Result.ok(new Page<>());
         }
@@ -132,9 +128,42 @@ public class StudentController {
             //用户表字段org_code不能在这里设置他的值
             user.setOrgCode(null);
             // 保存用户走一个service 保证事务
-            stuService.saveStudent(user, selectedRoles, selectedDeparts, selectedClassIds);
+            studentService.saveStudent(user, selectedRoles, selectedDeparts, selectedClassIds);
             baseCommonService.addLog("添加学生用户，username： " + user.getUsername(), CommonConstant.LOG_TYPE_2, 2);
             result.success("添加成功！");
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            result.error500("操作失败");
+        }
+        return result;
+    }
+
+
+    @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
+    public Result<SysUser> edit(@RequestBody JSONObject jsonObject) {
+        Result<SysUser> result = new Result<SysUser>();
+        try {
+            SysUser sysUser = sysUserService.getById(jsonObject.getString("id"));
+            baseCommonService.addLog("编辑用户，username： " + sysUser.getUsername(), CommonConstant.LOG_TYPE_2, 2);
+            if (sysUser == null) {
+                result.error500("未找到对应实体");
+            } else {
+                SysUser user = JSON.parseObject(jsonObject.toJSONString(), SysUser.class);
+                user.setUpdateTime(new Date());
+                //String passwordEncode = PasswordUtil.encrypt(user.getUsername(), user.getPassword(), sysUser.getSalt());
+                user.setPassword(sysUser.getPassword());
+                String roles = jsonObject.getString("selectedroles");
+                String departs = jsonObject.getString("selecteddeparts");
+                if (oConvertUtils.isEmpty(departs)) {
+                    //vue3.0前端只传递了departIds
+                    departs = user.getDepartIds();
+                }
+                //用户表字段org_code不能在这里设置他的值
+                user.setOrgCode(null);
+                // 修改用户走一个service 保证事务
+                sysUserService.editUser(user, roles, departs);
+                result.success("修改成功!");
+            }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             result.error500("操作失败");

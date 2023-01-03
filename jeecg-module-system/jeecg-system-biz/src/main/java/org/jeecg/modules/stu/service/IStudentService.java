@@ -3,6 +3,7 @@ package org.jeecg.modules.stu.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.jeecg.modules.stu.dto.StudentDTO;
+import org.jeecg.modules.stu.query.StudentQuery;
 import org.jeecg.modules.system.entity.SysUser;
 
 /**
@@ -29,5 +30,5 @@ public interface IStudentService {
      * @return
      */
     IPage<StudentDTO> queryPage(IPage<StudentDTO> page, QueryWrapper<StudentDTO> wrapper);
-    IPage<StudentDTO> queryPage(IPage<StudentDTO> page, QueryWrapper<StudentDTO> wrapper, String classId);
+    IPage<StudentDTO> queryPage(IPage<StudentDTO> page, QueryWrapper<StudentDTO> wrapper, StudentQuery query);
 }
