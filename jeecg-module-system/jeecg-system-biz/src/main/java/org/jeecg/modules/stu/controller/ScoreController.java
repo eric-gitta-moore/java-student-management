@@ -16,7 +16,11 @@ import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.stu.dto.ScoreStatDTO;
 import org.jeecg.modules.stu.entity.Score;
+import org.jeecg.modules.stu.entity.Subject;
+import org.jeecg.modules.stu.entity.TeachingPlan;
 import org.jeecg.modules.stu.service.IScoreService;
+import org.jeecg.modules.stu.service.ISubjectService;
+import org.jeecg.modules.stu.service.ITeachingPlanService;
 import org.jeecg.modules.stu.vo.ScorePage;
 import org.jeecg.modules.stu.vo.ScoreStatVO;
 import org.jeecg.modules.system.entity.SysUser;
@@ -59,6 +63,9 @@ public class ScoreController {
 
     @Autowired
     private ISysUserService sysUserService;
+
+    @Autowired
+    private ITeachingPlanService teachingPlanService;
 
     /**
      * 分页列表查询
@@ -116,6 +123,12 @@ public class ScoreController {
         }
         Score score = new Score();
         BeanUtils.copyProperties(scorePage, score);
+        // 判断是否及格
+        TeachingPlan course = teachingPlanService.getById(scoreExist.getCourseId());
+        score.setIsPass(0);
+        if (score.getScore() > course.getPassMark()) {
+            score.setIsPass(1);
+        }
         scoreService.saveMain(score);
         return Result.OK("添加成功！");
     }
@@ -137,7 +150,13 @@ public class ScoreController {
         if (scoreEntity == null) {
             return Result.error("未找到对应数据");
         }
-        scoreService.updateMain(score);
+        // 判断是否及格
+        TeachingPlan course = teachingPlanService.getById(scoreEntity.getCourseId());
+        scoreEntity.setIsPass(0);
+        if (scoreEntity.getScore() > course.getPassMark()) {
+            scoreEntity.setIsPass(1);
+        }
+        scoreService.updateMain(scoreEntity);
         return Result.OK("编辑成功!");
     }
 
