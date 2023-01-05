@@ -66,6 +66,7 @@
         <module>jeecg-module-demo</module>
         <module>jeecg-module-system</module>
 		<module>jeecg-module-stu</module>
+		<module>diboot-core</module>
 	</modules>
 
 	<repositories>
