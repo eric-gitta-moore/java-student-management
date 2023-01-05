@@ -48,7 +48,7 @@ public class TeachingPlan implements Serializable {
     /**
      * 科目编号
      */
-    @Excel(name = "科目编号", width = 15)
+    @Excel(name = "科目", width = 15, dictTable = "stu_subject", dicText = "name", dicCode = "id")
     @ApiModelProperty(value = "科目编号")
     @Dict(dictTable = "stu_subject", dicText = "name", dicCode = "id")
     private java.lang.String subjectId;

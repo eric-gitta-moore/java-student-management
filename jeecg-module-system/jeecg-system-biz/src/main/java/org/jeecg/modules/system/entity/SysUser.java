@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.diboot.core.config.Cons;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -118,6 +120,14 @@ public class SysUser extends BaseEntity<String> implements Serializable {
     @Excel(name = "删除状态", width = 15, dicCode = "del_flag")
     @TableLogic
     private Integer delFlag;
+
+
+    /**
+     * 覆盖diboot逻辑删除字段
+     */
+    @JsonIgnore
+    @TableField(exist = false)
+    private boolean deleted = false;
 
     /**
      * 工号，唯一键
