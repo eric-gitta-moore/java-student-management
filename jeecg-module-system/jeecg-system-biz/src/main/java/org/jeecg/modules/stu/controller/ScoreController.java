@@ -14,14 +14,13 @@ import org.jeecg.common.aspect.annotation.AutoLog;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.oConvertUtils;
-import org.jeecg.modules.stu.dto.ScoreStatDTO;
+import org.jeecg.core.base.controller.BaseRestController;
+import org.jeecg.modules.stu.dto.resp.ScoreStatDTO;
 import org.jeecg.modules.stu.entity.Score;
-import org.jeecg.modules.stu.entity.Subject;
 import org.jeecg.modules.stu.entity.TeachingPlan;
 import org.jeecg.modules.stu.service.IScoreService;
-import org.jeecg.modules.stu.service.ISubjectService;
 import org.jeecg.modules.stu.service.ITeachingPlanService;
-import org.jeecg.modules.stu.vo.ScorePage;
+import org.jeecg.modules.stu.vo.ScoreVO;
 import org.jeecg.modules.stu.vo.ScoreStatVO;
 import org.jeecg.modules.system.entity.SysUser;
 import org.jeecg.modules.system.service.ISysUserService;
@@ -56,7 +55,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/stu/score")
 @Slf4j
-public class ScoreController {
+public class ScoreController extends BaseRestController<Score, String> {
 
     @Autowired
     private IScoreService scoreService;
@@ -106,23 +105,23 @@ public class ScoreController {
     /**
      * 添加
      *
-     * @param scorePage
+     * @param scoreVO
      * @return
      */
     @AutoLog(value = "学生成绩-添加")
     @ApiOperation(value = "学生成绩-添加", notes = "学生成绩-添加")
     @RequiresPermissions("stu:stu_score:add")
     @PostMapping(value = "/add")
-    public Result<String> add(@RequestBody ScorePage scorePage) {
+    public Result<String> add(@RequestBody ScoreVO scoreVO) {
         LambdaQueryWrapper<Score> query = new LambdaQueryWrapper<>();
-        query.eq(Score::getCourseId, scorePage.getCourseId());
-        query.eq(Score::getStudentId, scorePage.getStudentId());
+        query.eq(Score::getCourseId, scoreVO.getCourseId());
+        query.eq(Score::getStudentId, scoreVO.getStudentId());
         Score scoreExist = scoreService.getOne(query);
         if (scoreExist != null) {
             return Result.error("成绩已经存在");
         }
         Score score = new Score();
-        BeanUtils.copyProperties(scorePage, score);
+        BeanUtils.copyProperties(scoreVO, score);
         // 判断是否及格
         TeachingPlan course = teachingPlanService.getById(scoreExist.getCourseId());
         score.setIsPass(0);
@@ -136,16 +135,16 @@ public class ScoreController {
     /**
      * 编辑
      *
-     * @param scorePage
+     * @param scoreVO
      * @return
      */
     @AutoLog(value = "学生成绩-编辑")
     @ApiOperation(value = "学生成绩-编辑", notes = "学生成绩-编辑")
     @RequiresPermissions("stu:stu_score:edit")
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
-    public Result<String> edit(@RequestBody ScorePage scorePage) {
+    public Result<String> edit(@RequestBody ScoreVO scoreVO) {
         Score score = new Score();
-        BeanUtils.copyProperties(scorePage, score);
+        BeanUtils.copyProperties(scoreVO, score);
         Score scoreEntity = scoreService.getById(score.getId());
         if (scoreEntity == null) {
             return Result.error("未找到对应数据");
@@ -234,9 +233,9 @@ public class ScoreController {
         List<Score> scoreList = scoreService.list(queryWrapper);
 
         // Step.3 组装pageList
-        List<ScorePage> pageList = new ArrayList<ScorePage>();
+        List<ScoreVO> pageList = new ArrayList<ScoreVO>();
         for (Score main : scoreList) {
-            ScorePage vo = new ScorePage();
+            ScoreVO vo = new ScoreVO();
             BeanUtils.copyProperties(main, vo);
             pageList.add(vo);
         }
@@ -244,7 +243,7 @@ public class ScoreController {
         // Step.4 AutoPoi 导出Excel
         ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
         mv.addObject(NormalExcelConstants.FILE_NAME, "学生成绩列表");
-        mv.addObject(NormalExcelConstants.CLASS, ScorePage.class);
+        mv.addObject(NormalExcelConstants.CLASS, ScoreVO.class);
         mv.addObject(NormalExcelConstants.PARAMS,
             new ExportParams("学生成绩数据", "导出人:" + sysUser.getRealname(), "学生成绩"));
         mv.addObject(NormalExcelConstants.DATA_LIST, pageList);
@@ -271,8 +270,8 @@ public class ScoreController {
             params.setHeadRows(1);
             params.setNeedSave(true);
             try {
-                List<ScorePage> list = ExcelImportUtil.importExcel(file.getInputStream(), ScorePage.class, params);
-                for (ScorePage page : list) {
+                List<ScoreVO> list = ExcelImportUtil.importExcel(file.getInputStream(), ScoreVO.class, params);
+                for (ScoreVO page : list) {
                     Score po = new Score();
                     BeanUtils.copyProperties(page, po);
                     scoreService.saveMain(po);

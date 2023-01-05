@@ -23,6 +23,7 @@ import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapp
 import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.conditions.update.UpdateChainWrapper;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.diboot.core.util.IGetter;
 import com.diboot.core.util.ISetter;
 import com.diboot.core.vo.LabelValue;
@@ -36,11 +37,12 @@ import java.util.function.Consumer;
 
 /**
  * 基础服务Service
+ *
  * @author mazc@dibo.ltd
  * @version 2.0
  * @date 2019/01/01
  */
-public interface BaseService<T> {
+public interface BaseService<T> extends IService<T> {
 
     /**
      * 获取对应 entity 的 BaseMapper
@@ -51,27 +53,35 @@ public interface BaseService<T> {
 
     /**
      * 构建mybatis-plus的query
+     *
      * @return
      */
     QueryChainWrapper<T> query();
+
     /**
      * 构建mybatis-plus的lambdaQuery
+     *
      * @return
      */
     LambdaQueryChainWrapper<T> lambdaQuery();
+
     /**
      * 构建mybatis-plus的update
+     *
      * @return
      */
     UpdateChainWrapper<T> update();
+
     /**
      * 构建mybatis-plus的lambdaUpdate
+     *
      * @return
      */
     LambdaUpdateChainWrapper<T> lambdaUpdate();
 
     /**
      * 获取Entity实体
+     *
      * @param id 主键
      * @return entity
      */
@@ -79,15 +89,17 @@ public interface BaseService<T> {
 
     /**
      * 获取entity某个属性值
+     *
      * @param idGetterFn id getter
-     * @param idVal id值
-     * @param getterFn 返回属性getter
+     * @param idVal      id值
+     * @param getterFn   返回属性getter
      * @return
      */
     <FT> FT getValueOfField(SFunction<T, ?> idGetterFn, Serializable idVal, SFunction<T, FT> getterFn);
 
     /**
      * 创建Entity实体
+     *
      * @param entity
      * @return true:成功, false:失败
      */
@@ -102,16 +114,17 @@ public interface BaseService<T> {
 
     /**
      * 添加entity 及 其关联子项entities
-     * @param entity 主表entity
-     * @param relatedEntities 关联表entities
+     *
+     * @param entity              主表entity
+     * @param relatedEntities     关联表entities
      * @param relatedEntitySetter 关联Entity类的setter
      * @return
      */
-    <RE, R> boolean createEntityAndRelatedEntities(T entity, List<RE> relatedEntities, ISetter<RE, R> relatedEntitySetter);
+    <RE, R> boolean createEntityAndRelatedEntities(T entity, List<RE> relatedEntities,
+        ISetter<RE, R> relatedEntitySetter);
 
     /**
-     * 创建或更新n-n关联
-     * （在主对象的service中调用，不依赖中间表service实现中间表操作）
+     * 创建或更新n-n关联 （在主对象的service中调用，不依赖中间表service实现中间表操作）
      *
      * @param driverIdGetter   驱动对象getter
      * @param driverId         驱动对象ID
@@ -120,11 +133,10 @@ public interface BaseService<T> {
      * @return
      */
     <R> boolean createOrUpdateN2NRelations(SFunction<R, ?> driverIdGetter, Object driverId,
-                                           SFunction<R, ?> followerIdGetter, List<? extends Serializable> followerIdList);
+        SFunction<R, ?> followerIdGetter, List<? extends Serializable> followerIdList);
 
     /**
-     * 创建或更新n-n关联
-     * （在主对象的service中调用，不依赖中间表service实现中间表操作）
+     * 创建或更新n-n关联 （在主对象的service中调用，不依赖中间表service实现中间表操作）
      * <p>
      * 可自定附加条件、参数
      *
@@ -138,11 +150,12 @@ public interface BaseService<T> {
      * @return
      */
     <R> boolean createOrUpdateN2NRelations(SFunction<R, ?> driverIdGetter, Object driverId,
-                                           SFunction<R, ?> followerIdGetter, List<? extends Serializable> followerIdList,
-                                           Consumer<QueryWrapper<R>> queryConsumer, Consumer<R> setConsumer);
+        SFunction<R, ?> followerIdGetter, List<? extends Serializable> followerIdList,
+        Consumer<QueryWrapper<R>> queryConsumer, Consumer<R> setConsumer);
 
     /**
      * 更新Entity实体
+     *
      * @param entity
      * @return
      */
@@ -150,6 +163,7 @@ public interface BaseService<T> {
 
     /**
      * 更新Entity实体（更新符合条件的所有非空字段）
+     *
      * @param entity
      * @param updateCriteria
      * @return
@@ -158,6 +172,7 @@ public interface BaseService<T> {
 
     /**
      * 更新Entity实体（仅更新updateWrapper.set指定的字段）
+     *
      * @param updateWrapper
      * @return
      */
@@ -165,6 +180,7 @@ public interface BaseService<T> {
 
     /**
      * 批量更新entity
+     *
      * @param entityList
      * @return
      */
@@ -179,6 +195,7 @@ public interface BaseService<T> {
 
     /**
      * 批量创建或更新entity（entity.id存在则新建，否则更新）
+     *
      * @param entityList
      * @return
      */
@@ -186,24 +203,29 @@ public interface BaseService<T> {
 
     /**
      * 添加entity 及 其关联子项entities
-     * @param entity 主表entity
-     * @param relatedEntities 关联表entities
+     *
+     * @param entity              主表entity
+     * @param relatedEntities     关联表entities
      * @param relatedEntitySetter 关联Entity类的setter
      * @return
      */
-    <RE,R> boolean updateEntityAndRelatedEntities(T entity, List<RE> relatedEntities, ISetter<RE, R> relatedEntitySetter);
+    <RE, R> boolean updateEntityAndRelatedEntities(T entity, List<RE> relatedEntities,
+        ISetter<RE, R> relatedEntitySetter);
 
     /**
      * 删除entity 及 其关联子项entities
-     * @param id 待删除entity的主键
-     * @param relatedEntityClass 待删除关联Entity类
-     * @param  relatedEntitySetter 待删除类的setter方法
+     *
+     * @param id                  待删除entity的主键
+     * @param relatedEntityClass  待删除关联Entity类
+     * @param relatedEntitySetter 待删除类的setter方法
      * @return
      */
-    <RE,R> boolean deleteEntityAndRelatedEntities(Serializable id, Class<RE> relatedEntityClass, ISetter<RE, R> relatedEntitySetter);
+    <RE, R> boolean deleteEntityAndRelatedEntities(Serializable id, Class<RE> relatedEntityClass,
+        ISetter<RE, R> relatedEntitySetter);
 
     /**
      * 根据主键删除实体
+     *
      * @param id 主键
      * @return true:成功, false:失败
      */
@@ -211,6 +233,7 @@ public interface BaseService<T> {
 
     /**
      * 根据主键撤销删除
+     *
      * @param id
      * @return
      */
@@ -218,6 +241,7 @@ public interface BaseService<T> {
 
     /**
      * 按条件删除实体
+     *
      * @param queryWrapper
      * @return
      * @throws Exception
@@ -226,6 +250,7 @@ public interface BaseService<T> {
 
     /**
      * 批量删除指定id的实体
+     *
      * @param entityIds
      * @return
      * @throws Exception
@@ -234,12 +259,14 @@ public interface BaseService<T> {
 
     /**
      * 获取符合条件的entity记录总数
+     *
      * @return
      */
     long getEntityListCount(Wrapper queryWrapper);
 
     /**
      * 获取指定条件的Entity集合
+     *
      * @param queryWrapper
      * @return
      * @throws Exception
@@ -248,6 +275,7 @@ public interface BaseService<T> {
 
     /**
      * 获取指定条件的Entity集合
+     *
      * @param queryWrapper
      * @param pagination
      * @return
@@ -257,6 +285,7 @@ public interface BaseService<T> {
 
     /**
      * 获取指定条件的Entity ID集合
+     *
      * @param queryWrapper
      * @param getterFn
      * @return
@@ -266,6 +295,7 @@ public interface BaseService<T> {
 
     /**
      * 获取指定条件的Entity集合
+     *
      * @param ids
      * @return
      */
@@ -273,6 +303,7 @@ public interface BaseService<T> {
 
     /**
      * 获取指定数量的entity记录
+     *
      * @param queryWrapper
      * @param limitCount
      * @return
@@ -282,6 +313,7 @@ public interface BaseService<T> {
 
     /**
      * 获取符合条件的一个Entity实体
+     *
      * @param queryWrapper
      * @return entity
      */
@@ -289,14 +321,16 @@ public interface BaseService<T> {
 
     /**
      * 是否存在符合条件的记录
+     *
      * @param getterFn entity的getter方法
-     * @param value 需要检查的值
+     * @param value    需要检查的值
      * @return
      */
     boolean exists(IGetter<T> getterFn, Object value);
 
     /**
      * 是否存在符合条件的记录
+     *
      * @param queryWrapper
      * @return
      */
@@ -304,6 +338,7 @@ public interface BaseService<T> {
 
     /**
      * 获取指定属性的Map列表
+     *
      * @param queryWrapper
      * @return
      */
@@ -311,6 +346,7 @@ public interface BaseService<T> {
 
     /**
      * 获取指定属性的Map列表
+     *
      * @param queryWrapper
      * @param pagination
      * @return
@@ -327,6 +363,7 @@ public interface BaseService<T> {
 
     /**
      * 获取id-指定name的映射map
+     *
      * @param entityIds
      * @param getterFn
      * @param <ID>
@@ -336,6 +373,7 @@ public interface BaseService<T> {
 
     /**
      * 获取指定条件的id-Entity 映射map
+     *
      * @param getterFn
      * @return
      */
@@ -343,6 +381,7 @@ public interface BaseService<T> {
 
     /**
      * 获取Map
+     *
      * @param queryWrapper
      * @return
      */
@@ -350,7 +389,8 @@ public interface BaseService<T> {
 
     /**
      * 获取View Object对象
-     * @param id 主键
+     *
+     * @param id      主键
      * @param voClass vo类
      * @return entity
      */
@@ -358,6 +398,7 @@ public interface BaseService<T> {
 
     /**
      * 根据查询条件获取vo列表
+     *
      * @param queryWrapper
      * @param pagination
      * @return

@@ -1,9 +1,9 @@
 package org.jeecg.modules.stu.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
-import org.jeecg.modules.stu.dto.CourseScoreStatDTO;
-import org.jeecg.modules.stu.dto.ScoreStatDTO;
+import org.jeecg.core.base.mapper.BaseMapper;
+import org.jeecg.modules.stu.dto.resp.CourseScoreStatDTO;
+import org.jeecg.modules.stu.dto.resp.ScoreStatDTO;
 import org.jeecg.modules.stu.entity.Score;
 
 import java.util.List;

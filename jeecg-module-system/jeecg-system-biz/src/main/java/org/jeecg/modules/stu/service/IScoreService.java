@@ -1,8 +1,8 @@
 package org.jeecg.modules.stu.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import org.jeecg.modules.stu.dto.CourseScoreStatDTO;
-import org.jeecg.modules.stu.dto.ScoreStatDTO;
+import org.jeecg.core.base.service.IBaseService;
+import org.jeecg.modules.stu.dto.resp.CourseScoreStatDTO;
+import org.jeecg.modules.stu.dto.resp.ScoreStatDTO;
 import org.jeecg.modules.stu.entity.Score;
 
 import java.io.Serializable;
@@ -16,7 +16,7 @@ import java.util.Map;
  * @Date: 2022-12-29
  * @Version: V1.0
  */
-public interface IScoreService extends IService<Score> {
+public interface IScoreService extends IBaseService<Score> {
 
     /**
      * 添加一对多
@@ -48,6 +48,7 @@ public interface IScoreService extends IService<Score> {
 
     /**
      * 获取学生所有课程的统计信息
+     *
      * @param userId
      * @return
      */
@@ -63,6 +64,7 @@ public interface IScoreService extends IService<Score> {
 
     /**
      * 获取课程统计信息
+     *
      * @param courseIds
      * @return
      */

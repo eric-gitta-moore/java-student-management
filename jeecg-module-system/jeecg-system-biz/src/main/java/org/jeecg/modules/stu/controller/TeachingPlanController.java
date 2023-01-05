@@ -13,11 +13,11 @@ import org.jeecg.common.aspect.annotation.AutoLog;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.oConvertUtils;
-import org.jeecg.modules.stu.dto.CourseScoreStatDTO;
+import org.jeecg.modules.stu.dto.resp.CourseScoreStatDTO;
 import org.jeecg.modules.stu.entity.TeachingPlan;
 import org.jeecg.modules.stu.service.IScoreService;
 import org.jeecg.modules.stu.service.ITeachingPlanService;
-import org.jeecg.modules.stu.vo.TeachingPlanPage;
+import org.jeecg.modules.stu.vo.TeachingPlanVO;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.def.NormalExcelConstants;
 import org.jeecgframework.poi.excel.entity.ExportParams;
@@ -70,7 +70,7 @@ public class TeachingPlanController {
     //@AutoLog(value = "教学计划-分页列表查询")
     @ApiOperation(value = "教学计划-分页列表查询", notes = "教学计划-分页列表查询")
     @GetMapping(value = "/list")
-    public Result<IPage<TeachingPlanPage>> queryPageList(TeachingPlan teachingPlan,
+    public Result<IPage<TeachingPlanVO>> queryPageList(TeachingPlan teachingPlan,
         @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
         @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
         HttpServletRequest req) {
@@ -79,10 +79,10 @@ public class TeachingPlanController {
         IPage<TeachingPlan> pageList = teachingPlanService.page(page, queryWrapper);
         List<String> courseIds = pageList.getRecords().stream().map(TeachingPlan::getId).collect(Collectors.toList());
 
-        IPage<TeachingPlanPage> result = pageList.convert(e -> {
-            TeachingPlanPage teachingPlanPage = new TeachingPlanPage();
-            BeanUtils.copyProperties(e, teachingPlanPage);
-            return teachingPlanPage;
+        IPage<TeachingPlanVO> result = pageList.convert(e -> {
+            TeachingPlanVO teachingPlanVO = new TeachingPlanVO();
+            BeanUtils.copyProperties(e, teachingPlanVO);
+            return teachingPlanVO;
         });
 
         // 加入课程统计信息
@@ -103,16 +103,16 @@ public class TeachingPlanController {
     /**
      * 添加
      *
-     * @param teachingPlanPage
+     * @param teachingPlanVO
      * @return
      */
     @AutoLog(value = "教学计划-添加")
     @ApiOperation(value = "教学计划-添加", notes = "教学计划-添加")
     @RequiresPermissions("stu:stu_teaching_plan:add")
     @PostMapping(value = "/add")
-    public Result<String> add(@RequestBody TeachingPlanPage teachingPlanPage) {
+    public Result<String> add(@RequestBody TeachingPlanVO teachingPlanVO) {
         TeachingPlan teachingPlan = new TeachingPlan();
-        BeanUtils.copyProperties(teachingPlanPage, teachingPlan);
+        BeanUtils.copyProperties(teachingPlanVO, teachingPlan);
         teachingPlanService.saveMain(teachingPlan);
         return Result.OK("添加成功！");
     }
@@ -120,16 +120,16 @@ public class TeachingPlanController {
     /**
      * 编辑
      *
-     * @param teachingPlanPage
+     * @param teachingPlanVO
      * @return
      */
     @AutoLog(value = "教学计划-编辑")
     @ApiOperation(value = "教学计划-编辑", notes = "教学计划-编辑")
     @RequiresPermissions("stu:stu_teaching_plan:edit")
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
-    public Result<String> edit(@RequestBody TeachingPlanPage teachingPlanPage) {
+    public Result<String> edit(@RequestBody TeachingPlanVO teachingPlanVO) {
         TeachingPlan teachingPlan = new TeachingPlan();
-        BeanUtils.copyProperties(teachingPlanPage, teachingPlan);
+        BeanUtils.copyProperties(teachingPlanVO, teachingPlan);
         TeachingPlan teachingPlanEntity = teachingPlanService.getById(teachingPlan.getId());
         if (teachingPlanEntity == null) {
             return Result.error("未找到对应数据");
@@ -211,9 +211,9 @@ public class TeachingPlanController {
         List<TeachingPlan> teachingPlanList = teachingPlanService.list(queryWrapper);
 
         // Step.3 组装pageList
-        List<TeachingPlanPage> pageList = new ArrayList<TeachingPlanPage>();
+        List<TeachingPlanVO> pageList = new ArrayList<TeachingPlanVO>();
         for (TeachingPlan main : teachingPlanList) {
-            TeachingPlanPage vo = new TeachingPlanPage();
+            TeachingPlanVO vo = new TeachingPlanVO();
             BeanUtils.copyProperties(main, vo);
             pageList.add(vo);
         }
@@ -221,7 +221,7 @@ public class TeachingPlanController {
         // Step.4 AutoPoi 导出Excel
         ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
         mv.addObject(NormalExcelConstants.FILE_NAME, "教学计划列表");
-        mv.addObject(NormalExcelConstants.CLASS, TeachingPlanPage.class);
+        mv.addObject(NormalExcelConstants.CLASS, TeachingPlanVO.class);
         mv.addObject(NormalExcelConstants.PARAMS,
             new ExportParams("教学计划数据", "导出人:" + sysUser.getRealname(), "教学计划"));
         mv.addObject(NormalExcelConstants.DATA_LIST, pageList);
@@ -248,9 +248,9 @@ public class TeachingPlanController {
             params.setHeadRows(1);
             params.setNeedSave(true);
             try {
-                List<TeachingPlanPage> list = ExcelImportUtil.importExcel(file.getInputStream(), TeachingPlanPage.class,
+                List<TeachingPlanVO> list = ExcelImportUtil.importExcel(file.getInputStream(), TeachingPlanVO.class,
                     params);
-                for (TeachingPlanPage page : list) {
+                for (TeachingPlanVO page : list) {
                     TeachingPlan po = new TeachingPlan();
                     BeanUtils.copyProperties(page, po);
                     teachingPlanService.saveMain(po);

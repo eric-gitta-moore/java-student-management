@@ -1,7 +1,7 @@
 package org.jeecg.modules.stu.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.jeecg.modules.stu.dto.StuClassDTO;
+import org.jeecg.modules.stu.dto.resp.StuClassDTO;
 import org.jeecg.modules.stu.entity.StuClassInfo;
 
 import java.io.Serializable;

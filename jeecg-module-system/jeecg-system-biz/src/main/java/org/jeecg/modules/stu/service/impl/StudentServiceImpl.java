@@ -5,11 +5,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.common.util.oConvertUtils;
-import org.jeecg.modules.stu.dto.StudentDTO;
+import org.jeecg.core.base.service.impl.BaseServiceimpl;
 import org.jeecg.modules.stu.entity.StudentClass;
 import org.jeecg.modules.stu.mapper.StudentClassMapper;
 import org.jeecg.modules.stu.mapper.StudentMapper;
-import org.jeecg.modules.stu.query.StudentQuery;
+import org.jeecg.modules.stu.dto.req.StudentDTO;
 import org.jeecg.modules.stu.service.IStudentService;
 import org.jeecg.modules.system.entity.SysUser;
 import org.jeecg.modules.system.service.ISysUserService;
@@ -23,7 +23,7 @@ import java.util.List;
  * @author w
  */
 @Service
-public class StudentServiceImpl implements IStudentService {
+public class StudentServiceImpl extends BaseServiceimpl<StudentMapper, SysUser> implements IStudentService {
 
     @Autowired
     private ISysUserService sysUserService;
@@ -50,15 +50,15 @@ public class StudentServiceImpl implements IStudentService {
     }
 
     @Override
-    public IPage<StudentDTO> queryPage(IPage<StudentDTO> page, QueryWrapper<StudentDTO> wrapper) {
+    public IPage<org.jeecg.modules.stu.dto.resp.StudentDTO> queryPage(IPage<org.jeecg.modules.stu.dto.resp.StudentDTO> page, QueryWrapper<org.jeecg.modules.stu.dto.resp.StudentDTO> wrapper) {
         return queryPage(page, wrapper, null);
     }
 
     @Override
-    public IPage<StudentDTO> queryPage(IPage<StudentDTO> page, QueryWrapper<StudentDTO> wrapper, StudentQuery query) {
+    public IPage<org.jeecg.modules.stu.dto.resp.StudentDTO> queryPage(IPage<org.jeecg.modules.stu.dto.resp.StudentDTO> page, QueryWrapper<org.jeecg.modules.stu.dto.resp.StudentDTO> wrapper, StudentDTO query) {
         Long limitBegin = page.offset();
         Long limitEnd = limitBegin + page.getSize();
-        QueryWrapper<StudentDTO> studentDTOQueryWrapper = new QueryWrapper<>();
+        QueryWrapper<org.jeecg.modules.stu.dto.resp.StudentDTO> studentDTOQueryWrapper = new QueryWrapper<>();
         studentDTOQueryWrapper.orderByDesc("stat_total");
         if (oConvertUtils.isNotEmpty(query.getClassId())) {
             studentDTOQueryWrapper.eq("stu_class.id", query.getClassId());
@@ -69,8 +69,8 @@ public class StudentServiceImpl implements IStudentService {
         if (oConvertUtils.isNotEmpty(query.getWorkNo())) {
             studentDTOQueryWrapper.like("sys_user.work_no", query.getWorkNo());
         }
-        List<StudentDTO> pageDTO = studentMapper.queryPageDTO(limitBegin, limitEnd, studentDTOQueryWrapper);
-        Page<StudentDTO> currentPage = new Page<>();
+        List<org.jeecg.modules.stu.dto.resp.StudentDTO> pageDTO = studentMapper.queryPageDTO(limitBegin, limitEnd, studentDTOQueryWrapper);
+        Page<org.jeecg.modules.stu.dto.resp.StudentDTO> currentPage = new Page<>();
         currentPage.setRecords(pageDTO);
         currentPage.setTotal(studentMapper.countPageDTO(studentDTOQueryWrapper));
         currentPage.setSize(page.getSize());

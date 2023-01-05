@@ -2,14 +2,14 @@ package org.jeecg.modules.stu.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.jeecg.modules.stu.dto.StudentDTO;
-import org.jeecg.modules.stu.query.StudentQuery;
+import org.jeecg.core.base.service.IBaseService;
+import org.jeecg.modules.stu.dto.req.StudentDTO;
 import org.jeecg.modules.system.entity.SysUser;
 
 /**
  * @author w
  */
-public interface IStudentService {
+public interface IStudentService extends IBaseService<SysUser> {
 
     /**
      * 添加学生
@@ -29,6 +29,7 @@ public interface IStudentService {
      * @param wrapper
      * @return
      */
-    IPage<StudentDTO> queryPage(IPage<StudentDTO> page, QueryWrapper<StudentDTO> wrapper);
-    IPage<StudentDTO> queryPage(IPage<StudentDTO> page, QueryWrapper<StudentDTO> wrapper, StudentQuery query);
+    IPage<org.jeecg.modules.stu.dto.resp.StudentDTO> queryPage(IPage<org.jeecg.modules.stu.dto.resp.StudentDTO> page, QueryWrapper<org.jeecg.modules.stu.dto.resp.StudentDTO> wrapper);
+
+    IPage<org.jeecg.modules.stu.dto.resp.StudentDTO> queryPage(IPage<org.jeecg.modules.stu.dto.resp.StudentDTO> page, QueryWrapper<org.jeecg.modules.stu.dto.resp.StudentDTO> wrapper, StudentDTO query);
 }

@@ -1,8 +1,8 @@
 package org.jeecg.modules.stu.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.jeecg.modules.stu.dto.CourseScoreStatDTO;
-import org.jeecg.modules.stu.dto.ScoreStatDTO;
+import org.jeecg.core.base.service.impl.BaseServiceimpl;
+import org.jeecg.modules.stu.dto.resp.CourseScoreStatDTO;
+import org.jeecg.modules.stu.dto.resp.ScoreStatDTO;
 import org.jeecg.modules.stu.entity.Score;
 import org.jeecg.modules.stu.mapper.ScoreMapper;
 import org.jeecg.modules.stu.service.IScoreService;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * @Version: V1.0
  */
 @Service
-public class ScoreServiceImpl extends ServiceImpl<ScoreMapper, Score> implements IScoreService {
+public class ScoreServiceImpl extends BaseServiceimpl<ScoreMapper, Score> implements IScoreService {
 
     @Autowired
     private ScoreMapper scoreMapper;

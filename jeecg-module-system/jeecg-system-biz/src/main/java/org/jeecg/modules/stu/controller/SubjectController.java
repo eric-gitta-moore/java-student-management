@@ -15,7 +15,7 @@ import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.stu.entity.Subject;
 import org.jeecg.modules.stu.service.ISubjectService;
-import org.jeecg.modules.stu.vo.SubjectPage;
+import org.jeecg.modules.stu.vo.SubjectVO;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.def.NormalExcelConstants;
 import org.jeecgframework.poi.excel.entity.ExportParams;
@@ -77,16 +77,16 @@ public class SubjectController {
     /**
      * 添加
      *
-     * @param subjectPage
+     * @param subjectVO
      * @return
      */
     @AutoLog(value = "科目管理-添加")
     @ApiOperation(value = "科目管理-添加", notes = "科目管理-添加")
     @RequiresPermissions("stu:stu_subject:add")
     @PostMapping(value = "/add")
-    public Result<String> add(@RequestBody SubjectPage subjectPage) {
+    public Result<String> add(@RequestBody SubjectVO subjectVO) {
         Subject subject = new Subject();
-        BeanUtils.copyProperties(subjectPage, subject);
+        BeanUtils.copyProperties(subjectVO, subject);
         subjectService.saveMain(subject);
         return Result.OK("添加成功！");
     }
@@ -94,16 +94,16 @@ public class SubjectController {
     /**
      * 编辑
      *
-     * @param subjectPage
+     * @param subjectVO
      * @return
      */
     @AutoLog(value = "科目管理-编辑")
     @ApiOperation(value = "科目管理-编辑", notes = "科目管理-编辑")
     @RequiresPermissions("stu:stu_subject:edit")
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
-    public Result<String> edit(@RequestBody SubjectPage subjectPage) {
+    public Result<String> edit(@RequestBody SubjectVO subjectVO) {
         Subject subject = new Subject();
-        BeanUtils.copyProperties(subjectPage, subject);
+        BeanUtils.copyProperties(subjectVO, subject);
         Subject subjectEntity = subjectService.getById(subject.getId());
         if (subjectEntity == null) {
             return Result.error("未找到对应数据");
@@ -184,9 +184,9 @@ public class SubjectController {
         List<Subject> subjectList = subjectService.list(queryWrapper);
 
         // Step.3 组装pageList
-        List<SubjectPage> pageList = new ArrayList<SubjectPage>();
+        List<SubjectVO> pageList = new ArrayList<SubjectVO>();
         for (Subject main : subjectList) {
-            SubjectPage vo = new SubjectPage();
+            SubjectVO vo = new SubjectVO();
             BeanUtils.copyProperties(main, vo);
             pageList.add(vo);
         }
@@ -194,7 +194,7 @@ public class SubjectController {
         // Step.4 AutoPoi 导出Excel
         ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
         mv.addObject(NormalExcelConstants.FILE_NAME, "科目管理列表");
-        mv.addObject(NormalExcelConstants.CLASS, SubjectPage.class);
+        mv.addObject(NormalExcelConstants.CLASS, SubjectVO.class);
         mv.addObject(NormalExcelConstants.PARAMS,
             new ExportParams("科目管理数据", "导出人:" + sysUser.getRealname(), "科目管理"));
         mv.addObject(NormalExcelConstants.DATA_LIST, pageList);
@@ -221,8 +221,8 @@ public class SubjectController {
             params.setHeadRows(1);
             params.setNeedSave(true);
             try {
-                List<SubjectPage> list = ExcelImportUtil.importExcel(file.getInputStream(), SubjectPage.class, params);
-                for (SubjectPage page : list) {
+                List<SubjectVO> list = ExcelImportUtil.importExcel(file.getInputStream(), SubjectVO.class, params);
+                for (SubjectVO page : list) {
                     Subject po = new Subject();
                     BeanUtils.copyProperties(page, po);
                     subjectService.saveMain(po);
