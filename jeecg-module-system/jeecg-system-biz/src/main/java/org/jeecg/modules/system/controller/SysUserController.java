@@ -159,7 +159,7 @@ public class SysUserController {
     }
 
     //@RequiresRoles({"admin"})
-    //Permissions("system:user:add")
+    //@RequiresPermissions("system:user:add")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public Result<SysUser> add(@RequestBody JSONObject jsonObject) {
         Result<SysUser> result = new Result<SysUser>();
@@ -188,7 +188,7 @@ public class SysUserController {
     }
 
     //@RequiresRoles({"admin"})
-    //Permissions("system:user:edit")
+    //@RequiresPermissions("system:user:edit")
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
     public Result<SysUser> edit(@RequestBody JSONObject jsonObject) {
         Result<SysUser> result = new Result<SysUser>();
@@ -467,7 +467,7 @@ public class SysUserController {
      * @param sysUser
      */
     //@RequiresRoles({"admin"})
-    //@RequiresPermissions("system:user:export")
+    //@Requires@RequiresPermissions("system:user:export")
     @RequestMapping(value = "/exportXls")
     public ModelAndView exportXls(SysUser sysUser, HttpServletRequest request) {
         // Step.1 组装查询条件
@@ -501,7 +501,7 @@ public class SysUserController {
      * @return
      */
     //@RequiresRoles({"admin"})
-    //Permissions("system:user:import")
+    //@RequiresPermissions("system:user:import")
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
     public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) throws IOException {
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
