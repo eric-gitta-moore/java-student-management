@@ -63,6 +63,8 @@ public class StudentController extends BaseRestController<SysUser, String> {
     @Autowired
     private IStuClassService stuClassService;
 
+    @GetMapping("/list2")
+    @ApiOperation(value = "学生管理-高性能分页", notes = "学生管理-高性能分页")
     public Result<IPagination<StudentVO>> query() {
 
         return null;
