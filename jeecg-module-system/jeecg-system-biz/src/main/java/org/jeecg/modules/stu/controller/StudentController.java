@@ -10,17 +10,18 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.constant.CommonConstant;
+import org.jeecg.core.base.controller.BaseRestController;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.util.PasswordUtil;
 import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.core.common.metadata.IPagination;
 import org.jeecg.modules.base.service.BaseCommonService;
-import org.jeecg.modules.stu.dto.StudentDTO;
-import org.jeecg.modules.stu.query.StudentQuery;
+import org.jeecg.modules.stu.dto.req.StudentDTO;
 import org.jeecg.modules.stu.service.IScoreService;
 import org.jeecg.modules.stu.service.IStuClassService;
 import org.jeecg.modules.stu.service.IStudentService;
-import org.jeecg.modules.stu.vo.StuUserPage;
-import org.jeecg.modules.stu.vo.StudentPage;
+import org.jeecg.modules.stu.vo.StuUserVO;
+import org.jeecg.modules.stu.vo.StudentVO;
 import org.jeecg.modules.system.entity.SysUser;
 import org.jeecg.modules.system.service.ISysDepartService;
 import org.jeecg.modules.system.service.ISysUserDepartService;
@@ -39,7 +40,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/stu/stu")
 @Slf4j
-public class StudentController {
+public class StudentController extends BaseRestController<SysUser, String> {
 
     @Autowired
     private ISysDepartService sysDepartService;
@@ -62,19 +63,24 @@ public class StudentController {
     @Autowired
     private IStuClassService stuClassService;
 
+    public Result<IPagination<StudentVO>> query() {
+
+        return null;
+    }
+
 
     @GetMapping("/list")
     @ApiOperation(value = "学生管理-分页列表查询", notes = "学生管理-分页列表查询")
-    public Result<IPage<StudentPage>> queryStuPageList(StuUserPage user,
+    public Result<IPage<StudentVO>> queryStuPageList(StuUserVO user,
         @RequestParam(defaultValue = "1") Integer pageNo,
         @RequestParam(defaultValue = "10") Integer pageSize,
-        HttpServletRequest req, StudentQuery studentQuery) {
+        HttpServletRequest req, StudentDTO studentQuery) {
         if (oConvertUtils.isEmpty(studentQuery.getClassId())) {
             return Result.ok(new Page<>());
         }
-        StudentDTO studentDTO = new StudentDTO();
+        org.jeecg.modules.stu.dto.resp.StudentDTO studentDTO = new org.jeecg.modules.stu.dto.resp.StudentDTO();
         BeanUtils.copyProperties(user, studentDTO);
-        QueryWrapper<StudentDTO> queryWrapper = QueryGenerator.initQueryWrapper(studentDTO, req.getParameterMap());
+        QueryWrapper<org.jeecg.modules.stu.dto.resp.StudentDTO> queryWrapper = QueryGenerator.initQueryWrapper(studentDTO, req.getParameterMap());
 
         // 账号状态
         String status = req.getParameter("status");
@@ -83,8 +89,8 @@ public class StudentController {
         }
         queryWrapper.ne("sys_user.username", "_reserve_user_external");
         queryWrapper.eq("sys_user.post", "student");
-        Page<StudentDTO> page = new Page<>(pageNo, pageSize);
-        IPage<StudentDTO> pageList = studentService.queryPage(page, queryWrapper, studentQuery);
+        Page<org.jeecg.modules.stu.dto.resp.StudentDTO> page = new Page<>(pageNo, pageSize);
+        IPage<org.jeecg.modules.stu.dto.resp.StudentDTO> pageList = studentService.queryPage(page, queryWrapper, studentQuery);
         if (pageList.getTotal() == 0) {
             return Result.ok(new Page<>());
         }
@@ -92,7 +98,7 @@ public class StudentController {
         //批量查询用户的所属部门
         //step.1 先拿到全部的 useids
         //step.2 通过 useids，一次性查询用户的所属部门名字
-        List<String> userIds = pageList.getRecords().stream().map(StudentDTO::getId).collect(Collectors.toList());
+        List<String> userIds = pageList.getRecords().stream().map(org.jeecg.modules.stu.dto.resp.StudentDTO::getId).collect(Collectors.toList());
         if (userIds != null && userIds.size() > 0) {
             Map<String, String> useDepNames = sysUserService.getDepNamesByUserIds(userIds);
             pageList.getRecords().forEach(item -> {
@@ -101,8 +107,8 @@ public class StudentController {
         }
 
         // 转换结果输出
-        IPage<StudentPage> stuUserPage = pageList.convert(currentUserItem -> {
-            StudentPage tempUserPage = new StudentPage();
+        IPage<StudentVO> stuUserPage = pageList.convert(currentUserItem -> {
+            StudentVO tempUserPage = new StudentVO();
             BeanUtils.copyProperties(currentUserItem, tempUserPage);
             return tempUserPage;
         });

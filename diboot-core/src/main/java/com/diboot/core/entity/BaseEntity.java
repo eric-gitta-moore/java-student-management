@@ -27,11 +27,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
 /**
  * Entity基础父类
+ *
  * @author mazc@dibo.ltd
  * @version v2.0
  * @date 2018/12/27
@@ -39,17 +41,18 @@ import java.util.Map;
 @Getter
 @Setter
 @Accessors(chain = true)
-public abstract class BaseEntity extends AbstractEntity<Long> {
+public abstract class BaseEntity<K extends Serializable> extends AbstractEntity<K> {
+
     private static final long serialVersionUID = 10203L;
 
     @Override
-    public BaseEntity setId(Long id){
+    public BaseEntity setId(K id) {
         super.setId(id);
         return this;
     }
 
     @Override
-    public Long getId(){
+    public K getId() {
         return super.getId();
     }
 
@@ -71,22 +74,23 @@ public abstract class BaseEntity extends AbstractEntity<Long> {
      * Entity对象转为map
      * @return
      */
-    public Map<String, Object> toMap(){
+    public Map<String, Object> toMap() {
         String jsonStr = JSON.stringify(this);
         return JSON.toMap(jsonStr);
     }
 
     /**
      * 获取主键值
+     *
      * @return
      */
     @JsonIgnore
-    public Object getPrimaryKeyVal(){
+    public Object getPrimaryKeyVal() {
         String pk = ContextHelper.getIdFieldName(this.getClass());
-        if(pk == null){
+        if (pk == null) {
             return null;
         }
-        if(Cons.FieldName.id.name().equals(pk)){
+        if (Cons.FieldName.id.name().equals(pk)) {
             return getId();
         }
         return BeanUtils.getProperty(this, pk);

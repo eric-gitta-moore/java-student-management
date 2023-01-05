@@ -15,7 +15,7 @@ import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.stu.entity.StuClassInfo;
 import org.jeecg.modules.stu.service.IStuClassService;
-import org.jeecg.modules.stu.vo.StuClassPage;
+import org.jeecg.modules.stu.vo.StuClassVO;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.def.NormalExcelConstants;
 import org.jeecgframework.poi.excel.entity.ExportParams;
@@ -77,16 +77,16 @@ public class StuClassController {
     /**
      * 添加
      *
-     * @param stuClassPage
+     * @param stuClassVO
      * @return
      */
     @AutoLog(value = "学生班级-添加")
     @ApiOperation(value = "学生班级-添加", notes = "学生班级-添加")
     @RequiresPermissions("stu:stu_class:add")
     @PostMapping(value = "/add")
-    public Result<String> add(@RequestBody StuClassPage stuClassPage) {
+    public Result<String> add(@RequestBody StuClassVO stuClassVO) {
         StuClassInfo stuClassInfo = new StuClassInfo();
-        BeanUtils.copyProperties(stuClassPage, stuClassInfo);
+        BeanUtils.copyProperties(stuClassVO, stuClassInfo);
         stuClassService.saveMain(stuClassInfo);
         return Result.OK("添加成功！");
     }
@@ -94,16 +94,16 @@ public class StuClassController {
     /**
      * 编辑
      *
-     * @param stuClassPage
+     * @param stuClassVO
      * @return
      */
     @AutoLog(value = "学生班级-编辑")
     @ApiOperation(value = "学生班级-编辑", notes = "学生班级-编辑")
     @RequiresPermissions("stu:stu_class:edit")
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
-    public Result<String> edit(@RequestBody StuClassPage stuClassPage) {
+    public Result<String> edit(@RequestBody StuClassVO stuClassVO) {
         StuClassInfo stuClassInfo = new StuClassInfo();
-        BeanUtils.copyProperties(stuClassPage, stuClassInfo);
+        BeanUtils.copyProperties(stuClassVO, stuClassInfo);
         StuClassInfo stuClassInfoEntity = stuClassService.getById(stuClassInfo.getId());
         if (stuClassInfoEntity == null) {
             return Result.error("未找到对应数据");
@@ -184,9 +184,9 @@ public class StuClassController {
         List<StuClassInfo> stuClassInfoList = stuClassService.list(queryWrapper);
 
         // Step.3 组装pageList
-        List<StuClassPage> pageList = new ArrayList<StuClassPage>();
+        List<StuClassVO> pageList = new ArrayList<StuClassVO>();
         for (StuClassInfo main : stuClassInfoList) {
-            StuClassPage vo = new StuClassPage();
+            StuClassVO vo = new StuClassVO();
             BeanUtils.copyProperties(main, vo);
             pageList.add(vo);
         }
@@ -194,7 +194,7 @@ public class StuClassController {
         // Step.4 AutoPoi 导出Excel
         ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
         mv.addObject(NormalExcelConstants.FILE_NAME, "学生班级列表");
-        mv.addObject(NormalExcelConstants.CLASS, StuClassPage.class);
+        mv.addObject(NormalExcelConstants.CLASS, StuClassVO.class);
         mv.addObject(NormalExcelConstants.PARAMS,
             new ExportParams("学生班级数据", "导出人:" + sysUser.getRealname(), "学生班级"));
         mv.addObject(NormalExcelConstants.DATA_LIST, pageList);
@@ -221,9 +221,9 @@ public class StuClassController {
             params.setHeadRows(1);
             params.setNeedSave(true);
             try {
-                List<StuClassPage> list = ExcelImportUtil.importExcel(file.getInputStream(), StuClassPage.class,
+                List<StuClassVO> list = ExcelImportUtil.importExcel(file.getInputStream(), StuClassVO.class,
                     params);
-                for (StuClassPage page : list) {
+                for (StuClassVO page : list) {
                     StuClassInfo po = new StuClassInfo();
                     BeanUtils.copyProperties(page, po);
                     stuClassService.saveMain(po);

@@ -1,7 +1,7 @@
 package org.jeecg.modules.stu.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.jeecg.modules.stu.dto.StuClassDTO;
+import org.jeecg.modules.stu.dto.resp.StuClassDTO;
 import org.jeecg.modules.stu.entity.StuClassInfo;
 
 import java.util.List;

@@ -44,7 +44,8 @@ import java.util.Map;
  * @date 2019/01/01
  */
 @SuppressWarnings({"unchecked", "JavaDoc"})
-public class BaseCrudRestController<E extends AbstractEntity> extends BaseController {
+public class BaseCrudRestController<E extends AbstractEntity<K>, K extends Serializable> extends BaseController {
+
     private static final Logger log = LoggerFactory.getLogger(BaseCrudRestController.class);
     /**
      * Entity，VO对应的class
@@ -81,7 +82,8 @@ public class BaseCrudRestController<E extends AbstractEntity> extends BaseContro
      * @return JsonResult
      * @throws Exception
      */
-    protected <VO> JsonResult<List<VO>> getViewObjectList(E entity, Pagination pagination, Class<VO> voClass) throws Exception {
+    protected <VO> JsonResult<List<VO>> getViewObjectList(E entity, Pagination pagination, Class<VO> voClass)
+        throws Exception {
         QueryWrapper<E> queryWrapper = super.buildQueryWrapperByQueryParams(entity);
         // 查询当前页的数据
         List<VO> voList = getService().getViewObjectList(queryWrapper, pagination, voClass);
@@ -97,9 +99,11 @@ public class BaseCrudRestController<E extends AbstractEntity> extends BaseContro
      * @return JsonResult
      * @throws Exception
      */
-    protected <VO> JsonResult<List<VO>> getViewObjectList(E entity, Pagination pagination, Class<VO> voClass, boolean buildQueryWrapperByDTO) throws Exception {
+    protected <VO> JsonResult<List<VO>> getViewObjectList(E entity, Pagination pagination, Class<VO> voClass,
+        boolean buildQueryWrapperByDTO) throws Exception {
         //DTO全部属性参与构建时调用
-        QueryWrapper<E> queryWrapper = buildQueryWrapperByDTO ? super.buildQueryWrapperByDTO(entity) : super.buildQueryWrapperByQueryParams(entity);
+        QueryWrapper<E> queryWrapper = buildQueryWrapperByDTO ? super.buildQueryWrapperByDTO(entity)
+            : super.buildQueryWrapperByQueryParams(entity);
         // 查询当前页的数据
         List<VO> voList = getService().getViewObjectList(queryWrapper, pagination, voClass);
         // 返回结果
@@ -128,7 +132,8 @@ public class BaseCrudRestController<E extends AbstractEntity> extends BaseContro
      * @return JsonResult
      * @throws Exception
      */
-    protected JsonResult<List<E>> getEntityListWithPaging(Wrapper<?> queryWrapper, Pagination pagination) throws Exception {
+    protected JsonResult<List<E>> getEntityListWithPaging(Wrapper<?> queryWrapper, Pagination pagination)
+        throws Exception {
         // 查询当前页的数据
         List<E> entityList = getService().getEntityList(queryWrapper, pagination);
         // 返回结果
@@ -168,13 +173,12 @@ public class BaseCrudRestController<E extends AbstractEntity> extends BaseContro
      * @return JsonResult
      * @throws Exception
      */
-    protected JsonResult<?> updateEntity(Serializable id, E entity) throws Exception {
+    protected JsonResult<?> updateEntity(K id, E entity) throws Exception {
         // 如果前端没有指定entity.id，在此设置，以兼容前端不传的情况
         if (entity.getId() == null) {
             String pk = ContextHelper.getIdFieldName(getEntityClass());
             if (Cons.FieldName.id.name().equals(pk)) {
-                Long longId = (id instanceof Long) ? (Long) id : Long.parseLong((String) id);
-                entity.setId(longId);
+                entity.setId(id);
             } else if (BeanUtils.getProperty(entity, pk) == null) {
                 BeanUtils.setProperty(entity, pk, id);
             }
@@ -205,7 +209,7 @@ public class BaseCrudRestController<E extends AbstractEntity> extends BaseContro
      */
     protected JsonResult<?> deleteEntity(Serializable id) throws Exception {
         if (id == null) {
-            return failInvalidParam( "请选择需要删除的条目！");
+            return failInvalidParam("请选择需要删除的条目！");
         }
         // 是否有权限删除
         E entity = getService().getEntity(id);
@@ -346,7 +350,8 @@ public class BaseCrudRestController<E extends AbstractEntity> extends BaseContro
      * @return
      */
     protected String beforeUpdate(E entityOrDto) throws Exception {
-        BeanUtils.clearFieldValue(entityOrDto, BindingCacheManager.getPropInfoByClass(getEntityClass()).getFillUpdateFieldList());
+        BeanUtils.clearFieldValue(entityOrDto,
+            BindingCacheManager.getPropInfoByClass(getEntityClass()).getFillUpdateFieldList());
         return null;
     }
 

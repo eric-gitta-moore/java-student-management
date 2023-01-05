@@ -1,69 +1,34 @@
-package org.jeecg.modules.stu.entity;
+package org.jeecg.modules.stu.vo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
-import org.jeecg.common.aspect.annotation.Dict;
-import org.jeecg.core.base.entity.BaseEntity;
 import org.jeecgframework.poi.excel.annotation.Excel;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.io.Serializable;
-
 /**
- * @Description: 学生成绩
+ * @Description: 科目管理
  * @Author: jeecg-boot
  * @Date: 2022-12-29
  * @Version: V1.0
  */
-@ApiModel(value = "stu_score对象", description = "学生成绩")
 @Data
-@EqualsAndHashCode(callSuper = false)
-@TableName("stu_score")
-@Accessors(chain = true)
-public class Score extends BaseEntity<String> implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+@ApiModel(value = "stu_subjectPage对象", description = "科目管理")
+public class SubjectVO {
 
     /**
      * 主键
      */
-    @TableId(type = IdType.ASSIGN_ID)
-    @ApiModelProperty(value = "主键")
+    @ApiModelProperty(value = "科目编号")
+    @Excel(name = "科目编号")
     private java.lang.String id;
     /**
-     * 学生
+     * 科目名称
      */
-    @Excel(name = "学生", width = 15, dictTable = "sys_user", dicText = "realname", dicCode = "id")
-    @Dict(dictTable = "sys_user", dicText = "realname", dicCode = "id")
-    @ApiModelProperty(value = "学生")
-    private java.lang.String studentId;
-    /**
-     * 课程
-     */
-    @Excel(name = "课程", width = 15)
-    @ApiModelProperty(value = "课程")
-    @Dict(dictTable = "stu_teaching_plan", dicText = "name", dicCode = "id")
-    private java.lang.String courseId;
-    /**
-     * 成绩
-     */
-    @Excel(name = "成绩", width = 15)
-    @ApiModelProperty(value = "成绩")
-    private java.lang.Double score;
-
-    /**
-     * 是否及格
-     */
-    @Excel(name = "是否及格")
-    @ApiModelProperty("是否及格")
-    private Integer isPass;
+    @Excel(name = "科目名称", width = 15)
+    @ApiModelProperty(value = "科目名称")
+    private java.lang.String name;
     /**
      * 创建人
      */
@@ -98,4 +63,6 @@ public class Score extends BaseEntity<String> implements Serializable {
     @ApiModelProperty(value = "所属部门")
     @Excel(name = "所属部门", dictTable = "sys_depart", dicText = "depart_name", dicCode = "org_code")
     private java.lang.String sysOrgCode;
+
+
 }
