@@ -11,6 +11,16 @@
     <artifactId>jeecg-system-biz</artifactId>
 
     <dependencies>
+        <!-- 自定义项目核心 -->
+        <dependency>
+            <groupId>org.jeecgframework.boot</groupId>
+            <artifactId>jeecg-module-custom-core</artifactId>
+        </dependency>
+        <!-- 自定义项目启动模块 负责相关配置加载初始化等 -->
+        <dependency>
+            <groupId>org.jeecgframework.boot</groupId>
+            <artifactId>jeecg-module-custom-starter</artifactId>
+        </dependency>
         <!-- diboot-core增强sql查询 -->
         <dependency>
             <groupId>org.jeecgframework.boot</groupId>
@@ -20,10 +30,6 @@
         <dependency>
             <groupId>org.jeecgframework.boot</groupId>
             <artifactId>jeecg-system-local-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jeecgframework.boot</groupId>
-            <artifactId>jeecg-module-custom-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
