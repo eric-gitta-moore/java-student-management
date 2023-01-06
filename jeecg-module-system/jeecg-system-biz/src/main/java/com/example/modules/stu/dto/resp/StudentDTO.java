@@ -1,17 +1,11 @@
-package org.jeecg.modules.system.entity;
+package com.example.modules.stu.dto.resp;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.example.modules.stu.entity.StuClassInfo;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import org.jeecg.common.aspect.annotation.Dict;
-import com.example.core.base.entity.BaseEntity;
 import org.jeecgframework.poi.excel.annotation.Excel;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -19,24 +13,17 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * <p>
- * 用户表
- * </p>
- *
- * @Author scott
- * @since 2018-12-20
+ * @author w
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class SysUser extends BaseEntity<String> implements Serializable {
+public class StudentDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * id
+     * userId
      */
-    @TableId(type = IdType.ASSIGN_ID)
     private String id;
 
     /**
@@ -50,18 +37,6 @@ public class SysUser extends BaseEntity<String> implements Serializable {
      */
     @Excel(name = "真实姓名", width = 15)
     private String realname;
-
-    /**
-     * 密码
-     */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
-
-    /**
-     * md5密码盐
-     */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String salt;
 
     /**
      * 头像
@@ -120,14 +95,6 @@ public class SysUser extends BaseEntity<String> implements Serializable {
     @TableLogic
     private Integer delFlag;
 
-
-    /**
-     * 覆盖diboot逻辑删除字段
-     */
-    @JsonIgnore
-    @TableField(exist = false)
-    private boolean deleted = false;
-
     /**
      * 工号，唯一键
      */
@@ -137,7 +104,7 @@ public class SysUser extends BaseEntity<String> implements Serializable {
     /**
      * 职务，关联职务表
      */
-    @Excel(name = "职务", width = 15, dictTable = "sys_position", dicText = "name", dicCode = "code")
+    @Excel(name = "职务", width = 15)
     @Dict(dictTable = "sys_position", dicText = "name", dicCode = "code")
     private String post;
 
@@ -197,6 +164,45 @@ public class SysUser extends BaseEntity<String> implements Serializable {
     /**
      * 登录首页地址
      */
-    @TableField(exist = false)
     private String homePath;
+
+    // 开始--------------------------------课程分数统计
+
+    /**
+     * 课程平均分
+     */
+    private Double average;
+
+    /**
+     * 课程总分
+     */
+    private Double total;
+
+    /**
+     * 课程总数
+     */
+    private Long courseTotalSize;
+
+    /**
+     * 及格课程数
+     */
+    private Long coursePassTotalSize;
+
+    /**
+     * 班级排名
+     */
+    private Long classRank;
+
+    // 结束--------------------------------课程分数统计
+
+    /**
+     * 班级信息
+     */
+    private StuClassInfo classInfo;
+
+
+    /**
+     * 父级部门
+     */
+    private String parentDepartId;
 }

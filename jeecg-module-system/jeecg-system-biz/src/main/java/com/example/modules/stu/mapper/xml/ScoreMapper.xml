@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.modules.stu.mapper.ScoreMapper">
+
+    <select id="getStuScoreStatAll" resultType="com.example.modules.stu.dto.resp.ScoreStatDTO">
+        select any_value(student_id) as userId,
+        avg(score) as average,
+        sum(score) as total,
+        count(*) as courseTotalSize,
+        count(is_pass = 1 or null) as coursePassTotalSize
+        from stu_score
+        where student_id in
+        (
+        <foreach collection="userIds" item="id" separator=",">#{id}</foreach>
+        )
+        group by student_id
+    </select>
+
+    <select id="getCourseScoreStat" resultType="com.example.modules.stu.dto.resp.CourseScoreStatDTO">
+        select count(*) as count, avg(score) as average, count(is_pass = 1 or null) as pass_count, course_id as id
+        from stu_score
+        where course_id in
+        (
+        <foreach collection="courseIds" item="id" separator=",">#{id}</foreach>
+        )
+        group by course_id
+    </select>
+
+</mapper>
