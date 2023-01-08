@@ -1,10 +1,11 @@
 package com.example.modules.stu.vo;
 
+import com.example.modules.stu.bo.SysUserBO;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import org.jeecg.modules.system.entity.SysUser;
 
 /**
  * @author w
@@ -15,7 +16,7 @@ import org.jeecg.modules.system.entity.SysUser;
 public class ScoreStatVO {
 
     @ApiModelProperty("学生信息")
-    private SysUser user;
+    private SysUserBO user;
     @ApiModelProperty("平均成绩")
     private Double average;
 

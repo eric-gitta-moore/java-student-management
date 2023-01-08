@@ -16,8 +16,6 @@ import org.jeecg.common.aspect.annotation.AutoLog;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.oConvertUtils;
-import org.jeecg.modules.system.entity.SysUser;
-import org.jeecg.modules.system.service.ISysUserService;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.def.NormalExcelConstants;
 import org.jeecgframework.poi.excel.entity.ExportParams;
@@ -35,9 +33,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.core.base.controller.BaseRestController;
+import com.example.modules.stu.bo.SysUserBO;
 import com.example.modules.stu.dto.ScoreStatDTO;
 import com.example.modules.stu.entity.Score;
 import com.example.modules.stu.entity.TeachingPlan;
+import com.example.modules.stu.manager.SysUserManager;
 import com.example.modules.stu.service.IScoreService;
 import com.example.modules.stu.service.ITeachingPlanService;
 import com.example.modules.stu.vo.ScoreStatVO;
@@ -63,7 +63,7 @@ public class ScoreController extends BaseRestController<Score, String> {
     private IScoreService scoreService;
 
     @Autowired
-    private ISysUserService sysUserService;
+    private SysUserManager sysUserManager;
 
     @Autowired
     private ITeachingPlanService teachingPlanService;
@@ -92,7 +92,7 @@ public class ScoreController extends BaseRestController<Score, String> {
     @ApiOperation(value = "学生成绩-获取分数统计", notes = "获取学生分数统计")
     @GetMapping("/score_stat")
     public Result<ScoreStatVO> getScoreStat(@RequestParam String userId) {
-        SysUser sysUser = sysUserService.getById(userId);
+        SysUserBO sysUser = sysUserManager.getById(userId);
         if (null == sysUser) {
             return Result.error("用户不存在");
         }
