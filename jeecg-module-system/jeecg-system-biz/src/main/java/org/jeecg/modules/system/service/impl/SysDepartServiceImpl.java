@@ -54,6 +54,8 @@ public class SysDepartServiceImpl extends ServiceImpl<SysDepartMapper, SysDepart
 	private SysDepartRoleUserMapper departRoleUserMapper;
 	@Autowired
 	private SysUserMapper sysUserMapper;
+	@Autowired
+	private SysDepartMapper sysDepartMapper;
 
 	@Override
 	public List<SysDepartTreeModel> queryMyDeptTreeList(String departIds) {
