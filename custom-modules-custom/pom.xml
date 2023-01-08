@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.jeecgframework.boot</groupId>
+        <artifactId>jeecg-boot-parent</artifactId>
+        <version>3.4.4</version>
+    </parent>
+
+    <artifactId>custom-modules-custom</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>custom-system-api</module>
+        <module>custom-system-core</module>
+        <module>custom-system-starter</module>
+        <module>custom-system-biz</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- system 启动配置 -->
+            <dependency>
+                <groupId>org.jeecgframework.boot</groupId>
+                <artifactId>custom-system-starter</artifactId>
+                <version>${jeecgboot.version}</version>
+            </dependency>
+            <!-- system 核心 -->
+            <dependency>
+                <groupId>org.jeecgframework.boot</groupId>
+                <artifactId>custom-system-core</artifactId>
+                <version>${jeecgboot.version}</version>
+            </dependency>
+            <!-- system 微服务 api -->
+            <dependency>
+                <groupId>org.jeecgframework.boot</groupId>
+                <artifactId>custom-system-api</artifactId>
+                <version>${jeecgboot.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>

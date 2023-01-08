@@ -5,21 +5,29 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.jeecgframework.boot</groupId>
-        <artifactId>jeecg-boot-parent</artifactId>
+        <artifactId>custom-modules-custom</artifactId>
         <version>3.4.4</version>
     </parent>
 
-    <artifactId>jeecg-module-custom-starter</artifactId>
+    <artifactId>custom-system-biz</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>org.jeecgframework.boot</groupId>
             <artifactId>jeecg-boot-base-core</artifactId>
         </dependency>
-        <!-- diboot-core增强sql查询 -->
+
         <dependency>
             <groupId>org.jeecgframework.boot</groupId>
-            <artifactId>diboot-core</artifactId>
+            <artifactId>custom-system-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jeecgframework.boot</groupId>
+            <artifactId>custom-system-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jeecgframework.boot</groupId>
+            <artifactId>custom-system-core</artifactId>
         </dependency>
     </dependencies>
 
