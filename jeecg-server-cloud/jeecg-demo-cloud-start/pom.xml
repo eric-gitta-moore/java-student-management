@@ -13,16 +13,16 @@
     <description>Demo微服务启动</description>
 
     <dependencies>
-        <!--引入微服务启动依赖 starter-->
+        <!-- 引入微服务启动依赖 starter -->
         <dependency>
             <groupId>org.jeecgframework.boot</groupId>
             <artifactId>jeecg-boot-starter-cloud</artifactId>
         </dependency>
-<!--        &lt;!&ndash;system cloud api&ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.jeecgframework.boot</groupId>-->
-<!--            <artifactId>jeecg-system-cloud-api</artifactId>-->
-<!--        </dependency>-->
+        <!-- 必须 system cloud api jeecg-boot-base-core里面需要用到 -->
+        <dependency>
+            <groupId>org.jeecgframework.boot</groupId>
+            <artifactId>jeecg-system-cloud-api</artifactId>
+        </dependency>
 <!--        <dependency>-->
 <!--            <groupId>org.jeecgframework.boot</groupId>-->
 <!--            <artifactId>jeecg-boot-starter-job</artifactId>-->
