@@ -18,16 +18,15 @@
             <groupId>org.jeecgframework.boot</groupId>
             <artifactId>jeecg-boot-starter-cloud</artifactId>
         </dependency>
-        <!--system cloud api-->
-        <dependency>
-            <groupId>org.jeecgframework.boot</groupId>
-            <artifactId>jeecg-system-cloud-api</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.jeecgframework.boot</groupId>
-            <artifactId>jeecg-boot-starter-job</artifactId>
-        </dependency>
+<!--        &lt;!&ndash;system cloud api&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.jeecgframework.boot</groupId>-->
+<!--            <artifactId>jeecg-system-cloud-api</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.jeecgframework.boot</groupId>-->
+<!--            <artifactId>jeecg-boot-starter-job</artifactId>-->
+<!--        </dependency>-->
 
         <!-- 引入demo模块 -->
         <dependency>

@@ -1,20 +1,26 @@
 package com.example.modules.stu.vo;
 
+import org.jeecg.common.aspect.annotation.Dict;
+import org.jeecgframework.poi.excel.annotation.Excel;
+
+import com.example.modules.stu.bo.SysUserBO;
+import com.example.modules.stu.entity.StuClassInfo;
+
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-import org.jeecg.common.aspect.annotation.Dict;
-import com.example.modules.stu.entity.StuClassInfo;
-import org.jeecg.modules.system.entity.SysUser;
-import org.jeecgframework.poi.excel.annotation.Excel;
 
 /**
+ * 学生用户对象
+ * 
  * @author w
  */
+@ApiModel(value = "StudentVO对象", description = "学生用户对象")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-public class StudentVO extends SysUser {
+public class StudentVO extends SysUserBO {
 
     // 开始--------------------------------课程分数统计
 
@@ -49,7 +55,6 @@ public class StudentVO extends SysUser {
      * 班级信息
      */
     private StuClassInfo classInfo;
-
 
     /**
      * 父级部门

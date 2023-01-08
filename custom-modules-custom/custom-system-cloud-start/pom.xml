@@ -18,6 +18,11 @@
             <groupId>org.jeecgframework.boot</groupId>
             <artifactId>jeecg-boot-starter-cloud</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.jeecgframework.boot</groupId>
+            <artifactId>custom-system-biz</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

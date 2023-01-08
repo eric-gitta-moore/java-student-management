@@ -1,20 +1,20 @@
 package com.example.modules.stu.mapper;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
-import com.example.modules.stu.dto.StudentDTO;
-import org.apache.ibatis.annotations.Param;
 import com.example.core.base.mapper.BaseMapper;
-import org.jeecg.modules.system.entity.SysUser;
-
-import java.util.List;
+import com.example.modules.stu.bo.SysUserBO;
 
 /**
  * @author w
  */
-public interface StudentMapper extends BaseMapper<SysUser> {
+public interface StudentMapper extends BaseMapper<SysUserBO> {
 
-    List<StudentDTO> queryPageDTO(@Param("limitBegin") Long limitBegin, @Param("limitEnd") Long limitEnd,
+    List<SysUserBO> queryPageDTO(@Param("limitBegin") Long limitBegin, @Param("limitEnd") Long limitEnd,
         @Param(Constants.WRAPPER) QueryWrapper queryWrapper);
 
     Long countPageDTO(@Param(Constants.WRAPPER) QueryWrapper queryWrapper);

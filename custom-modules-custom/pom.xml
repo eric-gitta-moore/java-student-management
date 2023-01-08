@@ -27,6 +27,11 @@
                 <artifactId>custom-system-starter</artifactId>
                 <version>${jeecgboot.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.jeecgframework.boot</groupId>
+                <artifactId>custom-system-biz</artifactId>
+                <version>${jeecgboot.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
