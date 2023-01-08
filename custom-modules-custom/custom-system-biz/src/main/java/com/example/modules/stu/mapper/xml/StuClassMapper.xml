@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.modules.stu.mapper.StuClassMapper">
 
-    <select id="queryStuClasses" resultType="com.example.modules.stu.dto.resp.StuClassDTO">
+    <select id="queryStuClasses" resultType="com.example.modules.stu.dto.StuClassDTO">
         select *
         from stu_student_class
         left join stu_class on stu_class.id = stu_student_class.class_id

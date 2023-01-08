@@ -1,8 +1,8 @@
 package com.example.modules.stu.service;
 
 import com.example.core.base.service.IBaseService;
-import com.example.modules.stu.dto.resp.CourseScoreStatDTO;
-import com.example.modules.stu.dto.resp.ScoreStatDTO;
+import com.example.modules.stu.dto.CourseScoreStatDTO;
+import com.example.modules.stu.dto.ScoreStatDTO;
 import com.example.modules.stu.entity.Score;
 
 import java.io.Serializable;

@@ -1,4 +1,4 @@
-package com.example.modules.stu.dto.req;
+package com.example.modules.stu.query;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-public class StudentDTO {
+public class StudentQuery {
 
     /**
      * 班级id 精确搜索

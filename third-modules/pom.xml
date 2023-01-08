@@ -12,6 +12,10 @@
     <artifactId>third-modules</artifactId>
     <packaging>pom</packaging>
 
+    <properties>
+        <commons-io.version>${commons.version}</commons-io.version>
+    </properties>
+
     <modules>
         <module>diboot-core</module>
     </modules>

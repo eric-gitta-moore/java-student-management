@@ -1,4 +1,4 @@
-package com.example.modules.stu.dto.resp;
+package com.example.modules.stu.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

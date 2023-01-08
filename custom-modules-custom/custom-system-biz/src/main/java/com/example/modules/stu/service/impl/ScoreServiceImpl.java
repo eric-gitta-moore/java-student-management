@@ -1,8 +1,8 @@
 package com.example.modules.stu.service.impl;
 
 import com.example.core.base.service.impl.BaseServiceimpl;
-import com.example.modules.stu.dto.resp.CourseScoreStatDTO;
-import com.example.modules.stu.dto.resp.ScoreStatDTO;
+import com.example.modules.stu.dto.CourseScoreStatDTO;
+import com.example.modules.stu.dto.ScoreStatDTO;
 import com.example.modules.stu.entity.Score;
 import com.example.modules.stu.mapper.ScoreMapper;
 import com.example.modules.stu.service.IScoreService;

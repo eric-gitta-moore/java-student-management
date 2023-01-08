@@ -4,7 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.modules.stu.dto.resp.StudentDTO;
+import com.example.modules.stu.dto.StudentDTO;
+import com.example.modules.stu.query.StudentQuery;
 import org.jeecg.common.util.oConvertUtils;
 import com.example.core.base.service.impl.BaseServiceimpl;
 import com.example.modules.stu.entity.StudentClass;
@@ -55,7 +56,7 @@ public class StudentServiceImpl extends BaseServiceimpl<StudentMapper, SysUser> 
     }
 
     @Override
-    public IPage<StudentDTO> queryPage(IPage<StudentDTO> page, QueryWrapper<StudentDTO> wrapper, com.example.modules.stu.dto.req.StudentDTO query) {
+    public IPage<StudentDTO> queryPage(IPage<StudentDTO> page, QueryWrapper<StudentDTO> wrapper, StudentQuery query) {
         Long limitBegin = page.offset();
         Long limitEnd = limitBegin + page.getSize();
         QueryWrapper<StudentDTO> studentDTOQueryWrapper = new QueryWrapper<>();

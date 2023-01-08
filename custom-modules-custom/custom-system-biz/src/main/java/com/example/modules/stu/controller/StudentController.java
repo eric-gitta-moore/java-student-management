@@ -5,7 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.modules.stu.dto.resp.StudentDTO;
+import com.example.modules.stu.dto.StudentDTO;
+import com.example.modules.stu.query.StudentQuery;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -76,7 +77,7 @@ public class StudentController extends BaseRestController<SysUser, String> {
     public Result<IPage<StudentVO>> queryStuPageList(StuUserVO user,
         @RequestParam(defaultValue = "1") Integer pageNo,
         @RequestParam(defaultValue = "10") Integer pageSize,
-        HttpServletRequest req, com.example.modules.stu.dto.req.StudentDTO studentQuery) {
+        HttpServletRequest req, StudentQuery studentQuery) {
         if (oConvertUtils.isEmpty(studentQuery.getClassId())) {
             return Result.ok(new Page<>());
         }

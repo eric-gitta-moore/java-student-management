@@ -34,6 +34,8 @@ public interface ServiceNameConstants {
 	 */
 	String SERVICE_DEMO = "jeecg-demo";
 
+	String SERVICE_STU = "custom-stu";
+
 	/**
 	 * gateway通过header传递根路径 basePath
 	 */

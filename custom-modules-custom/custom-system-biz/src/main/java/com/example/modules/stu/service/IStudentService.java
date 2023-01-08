@@ -3,7 +3,7 @@ package com.example.modules.stu.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.core.base.service.IBaseService;
-import com.example.modules.stu.dto.req.StudentDTO;
+import com.example.modules.stu.query.StudentQuery;
 import org.jeecg.modules.system.entity.SysUser;
 
 /**
@@ -29,7 +29,7 @@ public interface IStudentService extends IBaseService<SysUser> {
      * @param wrapper
      * @return
      */
-    IPage<com.example.modules.stu.dto.resp.StudentDTO> queryPage(IPage<com.example.modules.stu.dto.resp.StudentDTO> page, QueryWrapper<com.example.modules.stu.dto.resp.StudentDTO> wrapper);
+    IPage<StudentQuery> queryPage(IPage<StudentQuery> page, QueryWrapper<StudentQuery> wrapper);
 
-    IPage<com.example.modules.stu.dto.resp.StudentDTO> queryPage(IPage<com.example.modules.stu.dto.resp.StudentDTO> page, QueryWrapper<com.example.modules.stu.dto.resp.StudentDTO> wrapper, StudentDTO query);
+    IPage<StudentQuery> queryPage(IPage<StudentQuery> page, QueryWrapper<StudentQuery> wrapper, StudentQuery query);
 }
