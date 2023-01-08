@@ -14,9 +14,9 @@
 
     <modules>
         <module>custom-system-api</module>
-        <module>custom-system-core</module>
         <module>custom-system-starter</module>
         <module>custom-system-biz</module>
+        <module>custom-system-cloud-start</module>
     </modules>
 
     <dependencyManagement>
@@ -25,18 +25,6 @@
             <dependency>
                 <groupId>org.jeecgframework.boot</groupId>
                 <artifactId>custom-system-starter</artifactId>
-                <version>${jeecgboot.version}</version>
-            </dependency>
-            <!-- system 核心 -->
-            <dependency>
-                <groupId>org.jeecgframework.boot</groupId>
-                <artifactId>custom-system-core</artifactId>
-                <version>${jeecgboot.version}</version>
-            </dependency>
-            <!-- system 微服务 api -->
-            <dependency>
-                <groupId>org.jeecgframework.boot</groupId>
-                <artifactId>custom-system-api</artifactId>
                 <version>${jeecgboot.version}</version>
             </dependency>
         </dependencies>

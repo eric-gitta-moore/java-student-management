@@ -1,7 +1,7 @@
 package com.example.modules.stu.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.modules.stu.dto.resp.StuClassDTO;
+import com.example.modules.stu.dto.StuClassDTO;
 import com.example.modules.stu.entity.StuClassInfo;
 
 import java.util.List;

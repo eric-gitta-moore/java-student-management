@@ -1,4 +1,4 @@
-package com.example.modules.stu.dto.resp;
+package com.example.modules.stu.dto;
 
 import lombok.Data;
 

@@ -1,7 +1,7 @@
 package com.example.modules.stu.mapper;
 
-import com.example.modules.stu.dto.resp.CourseScoreStatDTO;
-import com.example.modules.stu.dto.resp.ScoreStatDTO;
+import com.example.modules.stu.dto.CourseScoreStatDTO;
+import com.example.modules.stu.dto.ScoreStatDTO;
 import com.example.modules.stu.entity.Score;
 import org.apache.ibatis.annotations.Param;
 import com.example.core.base.mapper.BaseMapper;

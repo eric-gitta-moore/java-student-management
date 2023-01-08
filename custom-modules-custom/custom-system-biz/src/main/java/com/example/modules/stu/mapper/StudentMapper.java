@@ -2,7 +2,7 @@ package com.example.modules.stu.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
-import com.example.modules.stu.dto.resp.StudentDTO;
+import com.example.modules.stu.dto.StudentDTO;
 import org.apache.ibatis.annotations.Param;
 import com.example.core.base.mapper.BaseMapper;
 import org.jeecg.modules.system.entity.SysUser;

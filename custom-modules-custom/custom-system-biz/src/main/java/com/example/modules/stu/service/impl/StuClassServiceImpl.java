@@ -1,7 +1,7 @@
 package com.example.modules.stu.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.modules.stu.dto.resp.StuClassDTO;
+import com.example.modules.stu.dto.StuClassDTO;
 import com.example.modules.stu.entity.StuClassInfo;
 import com.example.modules.stu.mapper.StuClassMapper;
 import com.example.modules.stu.service.IStuClassService;

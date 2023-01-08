@@ -1,17 +1,14 @@
 package com.example.modules.stu.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.modules.stu.dto.resp.ScoreStatDTO;
-import com.example.modules.stu.entity.Score;
-import com.example.modules.stu.entity.TeachingPlan;
-import com.example.modules.stu.service.IScoreService;
-import com.example.modules.stu.vo.ScoreStatVO;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.jeecg.common.api.vo.Result;
@@ -19,9 +16,6 @@ import org.jeecg.common.aspect.annotation.AutoLog;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.oConvertUtils;
-import com.example.core.base.controller.BaseRestController;
-import com.example.modules.stu.service.ITeachingPlanService;
-import com.example.modules.stu.vo.ScoreVO;
 import org.jeecg.modules.system.entity.SysUser;
 import org.jeecg.modules.system.service.ISysUserService;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
@@ -36,14 +30,22 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.core.base.controller.BaseRestController;
+import com.example.modules.stu.dto.ScoreStatDTO;
+import com.example.modules.stu.entity.Score;
+import com.example.modules.stu.entity.TeachingPlan;
+import com.example.modules.stu.service.IScoreService;
+import com.example.modules.stu.service.ITeachingPlanService;
+import com.example.modules.stu.vo.ScoreStatVO;
+import com.example.modules.stu.vo.ScoreVO;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @Description: 学生成绩
@@ -75,13 +77,12 @@ public class ScoreController extends BaseRestController<Score, String> {
      * @param req
      * @return
      */
-    //@AutoLog(value = "学生成绩-分页列表查询")
+    // @AutoLog(value = "学生成绩-分页列表查询")
     @ApiOperation(value = "学生成绩-分页列表查询", notes = "学生成绩-分页列表查询")
     @GetMapping(value = "/list")
     public Result<IPage<Score>> queryPageList(Score score,
         @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-        @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-        HttpServletRequest req) {
+        @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest req) {
         QueryWrapper<Score> queryWrapper = QueryGenerator.initQueryWrapper(score, req.getParameterMap());
         Page<Score> page = new Page<Score>(pageNo, pageSize);
         IPage<Score> pageList = scoreService.page(page, queryWrapper);
@@ -197,7 +198,7 @@ public class ScoreController extends BaseRestController<Score, String> {
      * @param id
      * @return
      */
-    //@AutoLog(value = "学生成绩-通过id查询")
+    // @AutoLog(value = "学生成绩-通过id查询")
     @ApiOperation(value = "学生成绩-通过id查询", notes = "学生成绩-通过id查询")
     @GetMapping(value = "/queryById")
     public Result<Score> queryById(@RequestParam(name = "id", required = true) String id) {
@@ -208,7 +209,6 @@ public class ScoreController extends BaseRestController<Score, String> {
         return Result.OK(score);
 
     }
-
 
     /**
      * 导出excel
@@ -221,15 +221,15 @@ public class ScoreController extends BaseRestController<Score, String> {
     public ModelAndView exportXls(HttpServletRequest request, Score score) {
         // Step.1 组装查询条件查询数据
         QueryWrapper<Score> queryWrapper = QueryGenerator.initQueryWrapper(score, request.getParameterMap());
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        LoginUser sysUser = (LoginUser)SecurityUtils.getSubject().getPrincipal();
 
-        //配置选中数据查询条件
+        // 配置选中数据查询条件
         String selections = request.getParameter("selections");
         if (oConvertUtils.isNotEmpty(selections)) {
             List<String> selectionList = Arrays.asList(selections.split(","));
             queryWrapper.in("id", selectionList);
         }
-        //Step.2 获取导出数据
+        // Step.2 获取导出数据
         List<Score> scoreList = scoreService.list(queryWrapper);
 
         // Step.3 组装pageList
@@ -244,8 +244,7 @@ public class ScoreController extends BaseRestController<Score, String> {
         ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
         mv.addObject(NormalExcelConstants.FILE_NAME, "学生成绩列表");
         mv.addObject(NormalExcelConstants.CLASS, ScoreVO.class);
-        mv.addObject(NormalExcelConstants.PARAMS,
-            new ExportParams("学生成绩数据", "导出人:" + sysUser.getRealname(), "学生成绩"));
+        mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("学生成绩数据", "导出人:" + sysUser.getRealname(), "学生成绩"));
         mv.addObject(NormalExcelConstants.DATA_LIST, pageList);
         return mv;
     }
@@ -260,7 +259,7 @@ public class ScoreController extends BaseRestController<Score, String> {
     @RequiresPermissions("stu:stu_score:importExcel")
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
     public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest)request;
         Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
         for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
             // 获取上传文件对象

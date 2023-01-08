@@ -1,4 +1,4 @@
-package com.example.modules.stu.dto.resp;
+package com.example.modules.stu.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

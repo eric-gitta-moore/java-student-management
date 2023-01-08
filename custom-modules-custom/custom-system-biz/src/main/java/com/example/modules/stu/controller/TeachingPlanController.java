@@ -3,7 +3,7 @@ package com.example.modules.stu.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.modules.stu.dto.resp.CourseScoreStatDTO;
+import com.example.modules.stu.dto.CourseScoreStatDTO;
 import com.example.modules.stu.entity.TeachingPlan;
 import com.example.modules.stu.service.IScoreService;
 import com.example.modules.stu.service.ITeachingPlanService;

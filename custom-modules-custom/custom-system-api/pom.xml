@@ -10,12 +10,11 @@
     </parent>
 
     <artifactId>custom-system-api</artifactId>
+    <packaging>pom</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.jeecgframework.boot</groupId>
-            <artifactId>jeecg-boot-base-core</artifactId>
-        </dependency>
-    </dependencies>
+    <modules>
+        <module>custom-system-cloud-api</module>
+        <module>custom-system-local-api</module>
+    </modules>
 
 </project>

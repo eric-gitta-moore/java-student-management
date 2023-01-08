@@ -25,9 +25,11 @@
             <groupId>org.jeecgframework.boot</groupId>
             <artifactId>custom-system-starter</artifactId>
         </dependency>
+
+        <!-- 系统模块微服务接口 -->
         <dependency>
             <groupId>org.jeecgframework.boot</groupId>
-            <artifactId>custom-system-core</artifactId>
+            <artifactId>jeecg-system-cloud-api</artifactId>
         </dependency>
     </dependencies>
 
