@@ -9,7 +9,7 @@
         <version>3.4.4</version>
     </parent>
 
-    <artifactId>jeecg-module-custom-core</artifactId>
+    <artifactId>custom-system-starter</artifactId>
 
     <dependencies>
         <dependency>
