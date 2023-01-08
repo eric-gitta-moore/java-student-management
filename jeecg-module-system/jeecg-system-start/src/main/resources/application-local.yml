@@ -1,6 +1,6 @@
 spring:
   config:
-    import: application-dev-tpl.yml
+    import: application-dev.yml
 ---
 spring:
   datasource:
