@@ -144,7 +144,13 @@
             <!-- custom-system 微服务 api -->
             <dependency>
                 <groupId>org.jeecgframework.boot</groupId>
-                <artifactId>custom-system-api</artifactId>
+                <artifactId>custom-system-cloud-api</artifactId>
+                <version>${jeecgboot.version}</version>
+            </dependency>
+            <!-- custom-system 单体 api -->
+            <dependency>
+                <groupId>org.jeecgframework.boot</groupId>
+                <artifactId>custom-system-local-api</artifactId>
                 <version>${jeecgboot.version}</version>
             </dependency>
 
