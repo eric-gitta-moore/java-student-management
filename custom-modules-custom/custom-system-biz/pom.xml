@@ -19,11 +19,11 @@
 
         <dependency>
             <groupId>org.jeecgframework.boot</groupId>
-            <artifactId>custom-system-api</artifactId>
+            <artifactId>custom-system-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jeecgframework.boot</groupId>
-            <artifactId>custom-system-starter</artifactId>
+            <artifactId>custom-system-local-api</artifactId>
         </dependency>
 
         <!-- 系统模块微服务接口 -->
